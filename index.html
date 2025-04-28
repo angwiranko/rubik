@@ -14,8 +14,9 @@
         "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
         "three/examples/jsm/loaders/GLTFLoader.js": "https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js",
         "three/examples/jsm/controls/OrbitControls.js": "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js",
-		"three/examples/jsm/geometries/TextGeometry.js": "https://unpkg.com/three@0.160.0/examples/jsm/geometries/TextGeometry.js",
-		"three/examples/jsm/loaders/FontLoader.js": "https://unpkg.com/three@0.160.0/examples/jsm/loaders/FontLoader.js",
+        "three/examples/jsm/geometries/TextGeometry.js": "https://unpkg.com/three@0.160.0/examples/jsm/geometries/TextGeometry.js",
+        "three/examples/jsm/loaders/FontLoader.js": "https://unpkg.com/three@0.160.0/examples/jsm/loaders/FontLoader.js",
+        "three/examples/jsm/geometries/RoundedBoxGeometry.js": "https://unpkg.com/three@0.160.0/examples/jsm/geometries/RoundedBoxGeometry.js",
 		"npm/@tweenjs/tween.js@20.0.0/dist/tween.esm.js": "https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@20.0.0/dist/tween.esm.js"
       }
     }
@@ -28,9 +29,11 @@
   import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
   import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
   import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
+  import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
   import TWEEN from 'npm/@tweenjs/tween.js@20.0.0/dist/tween.esm.js';
 
   const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x404040)
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
   const renderer = new THREE.WebGLRenderer({antialias: true});
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -55,22 +58,31 @@
   
   const cubes = [];
   const size = 1;
-  const gap = 0.05;
+  const gap = 0.04;
   const offset = (size + gap);
   
   for (let x = -1; x <= 1; x++) {
     for (let y = -1; y <= 1; y++) {
       for (let z = -1; z <= 1; z++) {
-        const geometry = new THREE.BoxGeometry(size, size, size);
-        const materials = [
-          new THREE.MeshBasicMaterial({ color: 0x4169E1 }),
-          new THREE.MeshBasicMaterial({ color: 0x32CD32 }),
-          new THREE.MeshBasicMaterial({ color: 0xFF7F50 }),
-          new THREE.MeshBasicMaterial({ color: 0xFFD700 }),
-          new THREE.MeshBasicMaterial({ color: 0xDC143C }),
-          new THREE.MeshBasicMaterial({ color: 0xffffff })
-        ];
-        const cube = new THREE.Mesh(geometry, materials);
+  
+        const geometry = new RoundedBoxGeometry(size, size, size, 4, 0.1);
+  
+        const faceMaterials = [];
+  
+        for (let i = 0; i < 6; i++) {
+          faceMaterials.push(new THREE.MeshBasicMaterial({ color: 0x101010 })); // alap fekete
+        }
+  
+        // Külső oldalak színezése
+        if (x === 1) faceMaterials[0] = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Right: piros
+        if (x === -1) faceMaterials[1] = new THREE.MeshBasicMaterial({ color: 0xffa500 }); // Left: narancs
+        if (y === 1) faceMaterials[2] = new THREE.MeshBasicMaterial({ color: 0xffff00 }); // Top: sárga
+        if (y === -1) faceMaterials[3] = new THREE.MeshBasicMaterial({ color: 0x00ff00 }); // Bottom: zöld
+        if (z === 1) faceMaterials[4] = new THREE.MeshBasicMaterial({ color: 0xffffff }); // Front: fehér
+        if (z === -1) faceMaterials[5] = new THREE.MeshBasicMaterial({ color: 0x0000ff }); // Back: kék
+  
+        const cube = new THREE.Mesh(geometry, faceMaterials);
+  
         cube.position.set(x * (size + gap), y * (size + gap), z * (size + gap));
         rubikGroup.add(cube);
         cubes.push(cube);
