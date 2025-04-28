@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>3D Rubik kocka)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
   <style>
 
   body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
@@ -23,15 +26,17 @@
   }
   
   .header h1 {
-    color: white;
+    font-family: "Rubik", sans-serif;
+	font-weight: 500;
+	color: white;
     margin: 0;
-    font-size: 64px;
+    font-size: 128px;
     pointer-events: none;
 	padding-top: 64px;
   }
 
   .buttons {
-    display: flex;
+	display: flex;
     flex-direction: row;
     gap: 12px;
     pointer-events: auto; /* a gombok kattinthatók maradjanak */
@@ -43,6 +48,8 @@
     border: none;
     border-radius: 8px;
     background-color: #333;
+	font-family: "Rubik", sans-serif;
+	font-weight: 400;
     color: white;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -150,12 +157,12 @@
           }
     
           // Külső oldalak színezése
-          if (x === 1) faceMaterials[0] = new THREE.MeshBasicMaterial({ color: 0xDC143C }); // Right: piros
-          if (x === -1) faceMaterials[1] = new THREE.MeshBasicMaterial({ color: 0xFFD700 }); // Left: narancs
-          if (y === 1) faceMaterials[2] = new THREE.MeshBasicMaterial({ color: 0x32CD32 }); // Top: sárga
-          if (y === -1) faceMaterials[3] = new THREE.MeshBasicMaterial({ color: 0xFF7F50 }); // Bottom: zöld
-          if (z === 1) faceMaterials[4] = new THREE.MeshBasicMaterial({ color: 0xffffff }); // Front: fehér
-          if (z === -1) faceMaterials[5] = new THREE.MeshBasicMaterial({ color: 0x4169E1 }); // Back: kék
+          if (x === 1) faceMaterials[0] = new THREE.MeshBasicMaterial({ color: 0x4169E1 }); // Right: kék
+          if (x === -1) faceMaterials[1] = new THREE.MeshBasicMaterial({ color: 0xFF7F50 }); // Left: zöld
+          if (y === 1) faceMaterials[2] = new THREE.MeshBasicMaterial({ color: 0xffffff }); // TOP: fehér
+          if (y === -1) faceMaterials[3] = new THREE.MeshBasicMaterial({ color: 0x32CD32 }); // bottom: sárga
+          if (z === 1) faceMaterials[4] = new THREE.MeshBasicMaterial({ color: 0xDC143C }); // FRONT: piros
+          if (z === -1) faceMaterials[5] = new THREE.MeshBasicMaterial({ color: 0xFFD700 }); // Back: narancs
     
           const cube = new THREE.Mesh(geometry, faceMaterials);
     
