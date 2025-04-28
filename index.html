@@ -21,7 +21,7 @@
     z-index: 10;
     pointer-events: none; /* hogy ne akadályozza a canvas interakciót */
   }
-
+  
   .header h1 {
     color: white;
     margin: 0;
@@ -47,10 +47,28 @@
     cursor: pointer;
     transition: background-color 0.3s;
   }
-
+  
   .buttons button:hover {
     background-color: #555;
   }
+  
+
+  @media (min-width: 0px) and (max-width: 1000px) {
+    .header h1 {
+      color: white;
+      margin: 0;
+      font-size: 128px;
+      pointer-events: none;
+      padding-top: 64px;
+    }
+	
+	.buttons button {
+      padding: 15px 30px;
+      font-size: 64px;
+	  border-radius: 16px;
+    }
+  }
+
 
 	
   </style>
@@ -76,7 +94,7 @@
   <h1>RUBID</h1>
   <div class="buttons">
     <button id="shuffleButton">🎲 Keverés</button>
-    <button id="resetButton">🧹 Reset</button>
+    <button id="resetButton">🧹 Újrakezdés</button>
   </div>
 </div>
 
@@ -128,7 +146,7 @@
           const faceMaterials = [];
     
           for (let i = 0; i < 6; i++) {
-            faceMaterials.push(new THREE.MeshBasicMaterial({ color: 0x101010 })); // alap fekete
+            faceMaterials.push(new THREE.MeshBasicMaterial({ color: 0x101010 }));
           }
     
           // Külső oldalak színezése
@@ -212,14 +230,14 @@
         upAmount = moveVector.y;
   
         if (Math.abs(rightAmount) > Math.abs(upAmount)) {
-          // Jobbra/Balra húzás ➔ sor (Y), Y tengely körül
+          // Jobbra/Balra húzás
           layerFilter = cube => Math.abs(cube.position.y - selectedCube.position.y) < 0.2;
           axis = 'y';
           direction = selectedFaceNormal.z > 0
             ? (rightAmount > 0 ? 1 : -1)
             : (rightAmount > 0 ? 1 : -1);
         } else {
-          // Fel/Le húzás ➔ oszlop (X), X tengely körül
+          // Fel/Le húzás
           layerFilter = cube => Math.abs(cube.position.x - selectedCube.position.x) < 0.2;
           axis = 'x';
           direction = selectedFaceNormal.z > 0
@@ -232,14 +250,14 @@
         upAmount = moveVector.y;
   
         if (Math.abs(rightAmount) > Math.abs(upAmount)) {
-          // Jobbra/Balra húzás ➔ sor (Y), Z tengely körül
+          // Jobbra/Balra húzás
           layerFilter = cube => Math.abs(cube.position.y - selectedCube.position.y) < 0.2;
           axis = 'y';
           direction = selectedFaceNormal.x > 0
             ? (rightAmount > 0 ? 1 : -1)
             : (rightAmount > 0 ? 1 : -1);
         } else {
-          // Fel/Le húzás ➔ oszlop (Z), Y tengely körül
+          // Fel/Le húzás
           layerFilter = cube => Math.abs(cube.position.z - selectedCube.position.z) < 0.2;
           axis = 'z';
           direction = selectedFaceNormal.x > 0
@@ -252,14 +270,14 @@
         upAmount = moveVector.y;
   
         if (Math.abs(rightAmount) > Math.abs(upAmount)) {
-          // Jobbra/Balra húzás ➔ sor (Z), X tengely körül
+          // Jobbra/Balra húzás
           layerFilter = cube => Math.abs(cube.position.z - selectedCube.position.z) < 0.2;
           axis = 'z';
           direction = selectedFaceNormal.y > 0
             ? (rightAmount > 0 ? -1 : 1)
             : (rightAmount > 0 ? 1 : -1);
         } else {
-          // Fel/Le húzás ➔ oszlop (X), Z tengely körül
+          // Fel/Le húzás
           layerFilter = cube => Math.abs(cube.position.x - selectedCube.position.x) < 0.2;
           axis = 'x';
           direction = selectedFaceNormal.y > 0
@@ -322,7 +340,7 @@
           });
           rubikGroup.remove(group);
           controls.enabled = true;
-          resolve(); // <-- Itt jelezzük, hogy kész
+          resolve();
         })
         .start();
     });
@@ -360,14 +378,12 @@
   }
 
   function resetCube() {
-    // Töröljük az összes kis kockát
     while (rubikGroup.children.length > 0) {
       const child = rubikGroup.children[0];
       rubikGroup.remove(child);
     }
     cubes.length = 0;
   
-    // Újrateremtjük a kockát
     createRubikCube();
   }
   
