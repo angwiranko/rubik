@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>3D Rubik kocka)</title>
+  <style>
+    body { margin: 0; overflow: hidden; }
+    canvas { display: block; }
+  </style>
+  
+     <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/examples/jsm/loaders/GLTFLoader.js": "https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js",
+        "three/examples/jsm/controls/OrbitControls.js": "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js",
+		"three/examples/jsm/geometries/TextGeometry.js": "https://unpkg.com/three@0.160.0/examples/jsm/geometries/TextGeometry.js",
+		"three/examples/jsm/loaders/FontLoader.js": "https://unpkg.com/three@0.160.0/examples/jsm/loaders/FontLoader.js",
+		"npm/@tweenjs/tween.js@20.0.0/dist/tween.esm.js": "https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@20.0.0/dist/tween.esm.js"
+      }
+    }
+    </script>
+</head>
+<body>
+<script type="module">
+  import * as THREE from 'three';
+  import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+  import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+  import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
+  import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
+  import TWEEN from 'npm/@tweenjs/tween.js@20.0.0/dist/tween.esm.js';
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({antialias: true});
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.1;
+controls.rotateSpeed = 0.5;
+
+const light = new THREE.AmbientLight(0xffffff, 0.8);
+scene.add(light);
+const dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
+dirLight.position.set(1, 1, 1).normalize();
+scene.add(dirLight);
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+const rubikGroup = new THREE.Group();
+scene.add(rubikGroup);
+
+const cubes = [];
+const size = 1;
+const gap = 0.05;
+const offset = (size + gap);
+
+for (let x = -1; x <= 1; x++) {
+  for (let y = -1; y <= 1; y++) {
+    for (let z = -1; z <= 1; z++) {
+      const geometry = new THREE.BoxGeometry(size, size, size);
+      const materials = [
+        new THREE.MeshBasicMaterial({ color: 0x4169E1 }),
+        new THREE.MeshBasicMaterial({ color: 0x32CD32 }),
+        new THREE.MeshBasicMaterial({ color: 0xFF7F50 }),
+        new THREE.MeshBasicMaterial({ color: 0xFFD700 }),
+        new THREE.MeshBasicMaterial({ color: 0xDC143C }),
+        new THREE.MeshBasicMaterial({ color: 0xffffff })
+      ];
+      const cube = new THREE.Mesh(geometry, materials);
+      cube.position.set(x * (size + gap), y * (size + gap), z * (size + gap));
+      rubikGroup.add(cube);
+      cubes.push(cube);
+    }
+  }
+}
+
+camera.position.z = 10;
+controls.target.set(0, 0, 0);
+controls.update();
+
+let selectedCube = null;
+let selectedFaceNormal = null;
+let selectedLocalRight = null;
+let selectedLocalUp = null;
+let isDragging = false;
+let dragStart = new THREE.Vector2();
+
+window.addEventListener('mousedown', (event) => {
+
+   
+  if (event.button !== 0) return;
+    
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(cubes);
+
+if (intersects.length > 0) {
+  selectedCube = intersects[0].object;
+  selectedFaceNormal = intersects[0].face.normal.clone().applyMatrix3(new THREE.Matrix3().getNormalMatrix(selectedCube.matrixWorld)).normalize();
+  
+  const globalUp = new THREE.Vector3(0, 1, 0);
+  if (Math.abs(selectedFaceNormal.y) > 0.9) {
+    selectedLocalRight = new THREE.Vector3(1, 0, 0);
+  } else {
+    selectedLocalRight = new THREE.Vector3().crossVectors(globalUp, selectedFaceNormal).normalize();
+  }
+  selectedLocalUp = new THREE.Vector3().crossVectors(selectedFaceNormal, selectedLocalRight).normalize();
+  
+  dragStart.set(event.clientX, event.clientY);
+  isDragging = true;
+  controls.enabled = false;
+}
+});
+
+window.addEventListener('mouseup', (event) => {
+  if (!isDragging || !selectedCube || !selectedFaceNormal) {
+    controls.enabled = true;
+    return;
+  }
+  
+  const dragEnd = new THREE.Vector2(event.clientX, event.clientY);
+  const dragVector = new THREE.Vector2().subVectors(dragEnd, dragStart);
+
+
+  if (dragVector.length() > 5) {
+    const cameraRight = new THREE.Vector3();
+    const cameraUp = new THREE.Vector3(0, 1, 0);
+    camera.getWorldDirection(cameraRight);
+    cameraRight.cross(cameraUp).normalize(); // jobbra mutató vektor a nézetben
+    cameraUp.cross(cameraRight).normalize(); // felfelé mutató vektor a nézetben
+  
+    const moveVector = new THREE.Vector3(dragVector.x, -dragVector.y, 0).normalize();
+    const rightAmount = moveVector.dot(selectedLocalRight);
+    const upAmount = moveVector.dot(selectedLocalUp);
+
+    let axis, layerFilter, direction;
+
+    const isHorizontal = Math.abs(rightAmount) > Math.abs(upAmount);
+
+    if (Math.abs(selectedFaceNormal.z) > 0.9) {
+      // Front / Back
+      if (Math.abs(rightAmount) > Math.abs(upAmount)) {
+        layerFilter = cube => Math.abs(cube.position.y - selectedCube.position.y) < 0.2;
+        axis = 'y';
+        direction = selectedFaceNormal.z > 0 ? (rightAmount > 0 ? -1 : 1) : (rightAmount > 0 ? 1 : -1);
+      } else {
+        layerFilter = cube => Math.abs(cube.position.x - selectedCube.position.x) < 0.2;
+        axis = 'x';
+        direction = selectedFaceNormal.z > 0 ? (upAmount > 0 ? 1 : -1) : (upAmount > 0 ? -1 : 1);
+      }
+    } else if (Math.abs(selectedFaceNormal.x) > 0.9) {
+      // Right / Left
+      if (Math.abs(rightAmount) > Math.abs(upAmount)) {
+        layerFilter = cube => Math.abs(cube.position.y - selectedCube.position.y) < 0.2;
+        axis = 'x'; // <<< figyelj: z!
+        direction = selectedFaceNormal.x > 0 ? (rightAmount > 0 ? 1 : -1) : (rightAmount > 0 ? -1 : 1);
+      } else {
+        layerFilter = cube => Math.abs(cube.position.z - selectedCube.position.z) < 0.2;
+        axis = 'z'; // <<< figyelj: y!
+        direction = selectedFaceNormal.x > 0 ? (upAmount > 0 ? 1 : -1) : (upAmount > 0 ? -1 : 1);
+      }
+    } else if (Math.abs(selectedFaceNormal.y) > 0.9) {
+      // Top / Bottom
+      if (Math.abs(rightAmount) > Math.abs(upAmount)) {
+        layerFilter = cube => Math.abs(cube.position.z - selectedCube.position.z) < 0.2;
+        axis = 'z'; // <<< figyelj: x!
+        direction = selectedFaceNormal.y > 0 ? (rightAmount > 0 ? -1 : 1) : (rightAmount > 0 ? 1 : -1);
+      } else {
+        layerFilter = cube => Math.abs(cube.position.x - selectedCube.position.x) < 0.2;
+        axis = 'x'; // <<< figyelj: z!
+        direction = selectedFaceNormal.y > 0 ? (upAmount > 0 ? 1 : -1) : (upAmount > 0 ? -1 : 1);
+      }
+    }
+
+    rotateLayer(layerFilter, axis, direction);
+  } else {
+    controls.enabled = true;
+  }
+
+  isDragging = false;
+  selectedCube = null;
+  selectedFaceNormal = null;
+});
+
+function rotateLayer(filterFunc, axis, direction) {
+  const group = new THREE.Group();
+  rubikGroup.add(group);
+  const selected = cubes.filter(filterFunc);
+  selected.forEach(cube => group.add(cube));
+
+  const targetRotation = { x: group.rotation.x, y: group.rotation.y, z: group.rotation.z };
+
+  if (axis === 'x') targetRotation.x += direction * Math.PI / 2;
+  if (axis === 'y') targetRotation.y += direction * Math.PI / 2;
+  if (axis === 'z') targetRotation.z += direction * Math.PI / 2;
+
+  new TWEEN.Tween(group.rotation)
+    .to(targetRotation, 500)
+    .easing(TWEEN.Easing.Quadratic.Out)
+    .onComplete(() => {
+      selected.forEach(cube => {
+        group.updateMatrixWorld();
+        cube.applyMatrix4(group.matrix);
+        rubikGroup.add(cube);
+      });
+      rubikGroup.remove(group);
+      controls.enabled = true;
+    })
+    .start();
+}
+
+function animate() {
+  requestAnimationFrame(animate);
+  TWEEN.update();
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>
