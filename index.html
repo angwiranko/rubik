@@ -6,6 +6,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
   <style>
 
   body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
@@ -53,10 +55,213 @@
     color: white;
     cursor: pointer;
     transition: background-color 0.3s;
+    display: grid;
+    align-items: center;
   }
   
   .buttons button:hover {
     background-color: #555;
+  }
+  
+  .input-wrapper {
+    position: fixed;
+    bottom: 0;
+    left: 5vw;
+    right: 5vw;
+    width: 90vw;
+	height: 500px;
+    background-color: rgba(0, 0, 0, 0.85);
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    transition: height 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1000;
+    overflow: hidden;
+    touch-action: none;
+  }
+  
+  .input-wrapper p {
+   color: white;
+   font-size: 32px;
+  }
+  
+  .drag-handle {
+    width: 64px;
+    height: 8px;
+    background: #666;
+    border-radius: 4px;
+    margin: 8px 0;
+    cursor: grab;
+  }
+  
+  .accordion-content {
+    flex: 1;
+    overflow-y: auto;
+    width: 100%;
+    padding: 8px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+      
+  .accordion-toggle {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  #toggleInputPanel {
+    font-size: 32px;
+    padding: 6px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    z-index: 9000;
+  }
+  
+  .accordion-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .input-panel {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    
+  }
+  
+  .button-row {
+    position: fixed;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+	bottom: 0px;
+    gap: 16px;
+    padding-bottom: 16px;
+	padding-top: 16px; 
+	z-index: 1000;
+	background-color: #000;
+	width: 86vw;
+	left: 7vw;
+	grid-template-columns: repeat(4, 22%);
+    grid-column-gap: auto;
+  }
+  
+  
+ 
+   .face-input {
+    display: grid;
+	grid-template-columns: repeat(3, 50px);
+    grid-template-rows: repeat(3, 50px);
+    gap: 7px;
+    padding: 4px;
+    border-radius: 8px;
+	color: white;
+	opacity: 0.7;
+  }
+  
+  .face-input input {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    text-align: center;
+    border: none;
+    outline: none;
+    text-transform: uppercase;
+    caret-color: white;
+	color: white;
+	background-color: #222;
+	
+  }
+  
+  .input-panel button {
+    font-size: 18px;
+    padding: 6px 16px;
+    background: #444;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  
+  .tutorial-panel {
+    position: absolute;
+    bottom: 30px;
+    width: 500px;
+    height: 124px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-family: "Rubik", sans-serif;
+    font-size: 20px;
+    padding: 12px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 20;
+    border-radius: 8px;
+  }
+
+  .tutorial-buttonL {
+    flex: 0 0 10%;
+    height: 100px;
+    border-radius: 0px 8px 8px 0px;
+	padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000;
+    cursor: pointer;
+    font-size: 32px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    user-select: none;
+  }
+
+  .tutorial-buttonR {
+    flex: 0 0 10%;
+    height: 100px;
+    border-radius: 8px 0px 0px 8px;
+	padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000;
+    cursor: pointer;
+    font-size: 32px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    user-select: none;
+  }
+
+  .tutorial-buttonL:hover {
+    background-color: #444;
+  }
+
+  .tutorial-buttonR:hover {
+    background-color: #444;
+  }
+
+  .tutorial-text {
+    flex: 1;
+    text-align: center;
+    padding: 0 16px;
+  }
+
+  .tutorial-text strong {
+    font-size: 24px;
+    display: block;
+    margin-bottom: 4px;
   }
   
 
@@ -69,11 +274,113 @@
       padding-top: 64px;
     }
 	
-	.buttons button {
-      padding: 15px 30px;
-      font-size: 48px;
-	  border-radius: 16px;
+	.input-panel {
+      flex-wrap: wrap;
+      flex-direction: row;
+      justify-content: center;
     }
+  
+    .button-row {
+      flex-direction: row;
+    }
+  
+    .buttons button {
+      font-size: 40px;
+    }
+	
+	.face-input {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 7px;
+      padding: 4px;
+      border-radius: 8px;
+      color: white;
+      
+    }
+    
+    .face-input input {
+      width: 100px;
+      height: 100px;
+      font-size: 40px;
+      text-align: center;
+      border: none;
+      outline: none;
+      text-transform: uppercase;
+      caret-color: white;
+      color: white;
+      background-color: #222;
+    }
+
+    .tutorial-panel {
+      position: absolute;
+      bottom: 32px;
+      width: 90%;
+	  height: 200px;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      font-family: "Rubik", sans-serif;
+      font-size: 32px;
+      padding: 24px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 20;
+      border-radius: 16px;
+    }
+  
+    .tutorial-buttonL {
+      flex: 0 0 10%;
+      height: 150px;
+      border-radius: 0px 8px 8px 0px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #000;
+      cursor: pointer;
+      font-size: 32px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      user-select: none;
+    }
+  
+    .tutorial-buttonR {
+      flex: 0 0 10%;
+      height: 150px;
+      border-radius: 8px 0px 0px 8px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #000;
+      cursor: pointer;
+      font-size: 32px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      user-select: none;
+    }
+  
+    .tutorial-buttonL:hover {
+      background-color: #000;
+    }
+  
+    .tutorial-buttonR:hover {
+      background-color: #000;
+    }
+  
+    .tutorial-text {
+      flex: 1;
+      text-align: center;
+      padding: 0 16px;
+    }
+  
+    .tutorial-text strong {
+      font-size: 40px;
+      display: block;
+      margin-bottom: 8px;
+    }
+  
   }
 
 
@@ -98,11 +405,107 @@
 <body>
 
 <div class="header">
-  <h1>RUBID</h1>
-  <div class="buttons">
-    <button id="shuffleButton">🎲 Keverés</button>
-    <button id="resetButton">🧹 Újrakezdés</button>
+  <h1>SCUBIK</h1>
+  <div class="buttons" style="display: none">
+    <button id="shuffleButton2">🎲 Keverj</button>
+    <button id="resetButton2">🧹 Elölről</button>
+    <button id="toggleGuideButton">📖 Taníts!</button>
   </div>
+</div>
+
+
+<div class="input-wrapper" id="inputWrapper">
+  <div class="drag-handle" id="dragHandle"></div>
+  <div><p>Scribe your secret message here</p></div>
+  <div class="accordion-content" id="accordionContent">
+    <div class="input-panel">
+  <div class="face-input" style="background-color: #f44336;" data-face="front">
+    <input type="text" maxlength="1" id="front-0" />
+    <input type="text" maxlength="1" id="front-1" />
+    <input type="text" maxlength="1" id="front-2" />
+    <input type="text" maxlength="1" id="front-3" />
+    <input type="text" maxlength="1" id="front-4" />
+    <input type="text" maxlength="1" id="front-5" />
+    <input type="text" maxlength="1" id="front-6" />
+    <input type="text" maxlength="1" id="front-7" />
+    <input type="text" maxlength="1" id="front-8" />
+  </div>
+  <div class="face-input" style="background-color: #2196f3;" data-face="back">
+    <input type="text" maxlength="1" id="back-0" />
+    <input type="text" maxlength="1" id="back-1" />
+    <input type="text" maxlength="1" id="back-2" />
+    <input type="text" maxlength="1" id="back-3" />
+    <input type="text" maxlength="1" id="back-4" />
+    <input type="text" maxlength="1" id="back-5" />
+    <input type="text" maxlength="1" id="back-6" />
+    <input type="text" maxlength="1" id="back-7" />
+    <input type="text" maxlength="1" id="back-8" />
+  </div>
+  <div class="face-input" style="background-color: #ff9800;" data-face="left">
+    <input type="text" maxlength="1" id="left-0" />
+    <input type="text" maxlength="1" id="left-1" />
+    <input type="text" maxlength="1" id="left-2" />
+    <input type="text" maxlength="1" id="left-3" />
+    <input type="text" maxlength="1" id="left-4" />
+    <input type="text" maxlength="1" id="left-5" />
+    <input type="text" maxlength="1" id="left-6" />
+    <input type="text" maxlength="1" id="left-7" />
+    <input type="text" maxlength="1" id="left-8" />
+  </div>
+  <div class="face-input" style="background-color: #ff6f61;" data-face="right">
+    <input type="text" maxlength="1" id="right-0" />
+    <input type="text" maxlength="1" id="right-1" />
+    <input type="text" maxlength="1" id="right-2" />
+    <input type="text" maxlength="1" id="right-3" />
+    <input type="text" maxlength="1" id="right-4" />
+    <input type="text" maxlength="1" id="right-5" />
+    <input type="text" maxlength="1" id="right-6" />
+    <input type="text" maxlength="1" id="right-7" />
+    <input type="text" maxlength="1" id="right-8" />
+  </div>
+  <div class="face-input" style="background-color: #ffffff;" data-face="top">
+    <input type="text" maxlength="1" id="top-0" />
+    <input type="text" maxlength="1" id="top-1" />
+    <input type="text" maxlength="1" id="top-2" />
+    <input type="text" maxlength="1" id="top-3" />
+    <input type="text" maxlength="1" id="top-4" />
+    <input type="text" maxlength="1" id="top-5" />
+    <input type="text" maxlength="1" id="top-6" />
+    <input type="text" maxlength="1" id="top-7" />
+    <input type="text" maxlength="1" id="top-8" />
+  </div>
+  <div class="face-input" style="background-color: #ffeb3b;" data-face="bottom">
+    <input type="text" maxlength="1" id="bottom-0" />
+    <input type="text" maxlength="1" id="bottom-1" />
+    <input type="text" maxlength="1" id="bottom-2" />
+    <input type="text" maxlength="1" id="bottom-3" />
+    <input type="text" maxlength="1" id="bottom-4" />
+    <input type="text" maxlength="1" id="bottom-5" />
+    <input type="text" maxlength="1" id="bottom-6" />
+    <input type="text" maxlength="1" id="bottom-7" />
+    <input type="text" maxlength="1" id="bottom-8" />
+  </div>
+</div> 
+</div>
+</div>
+
+<div class="buttons button-row">
+  <button id="resetButton"><span class="material-symbols-outlined" style="font-size:48px">delete_forever</span> Reset</button>
+  <button id="applyTextButton"><span class="material-symbols-outlined" style="font-size:48px">script</span> Inscript</button>
+  <button id="shuffleButton"><span class="material-symbols-outlined" style="font-size:48px">ifl</span> Shuffle</button>
+  <button id="generateLinkButton"><span class="material-symbols-outlined" style="font-size:48px">link</span> Share</button>
+</div>
+
+<div style="display:flex;justify-content: center;">
+  <div class="tutorial-panel">
+    <div class="tutorial-buttonL" id="prevStep">◀</div>
+    <div class="tutorial-text" id="tutorialText">
+      <strong>1. lépés</strong>
+      Fehér kereszt kialakítása. Keresd a fehér élkockákat, és igazítsd őket úgy, hogy a fehér közép körül keresztet alkossanak.
+    </div>
+    <div class="tutorial-buttonR" id="nextStep">▶</div>
+  </div>
+</div>
 </div>
 
 <script type="module">
@@ -113,6 +516,9 @@
   import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
   import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
   import TWEEN from 'npm/@tweenjs/tween.js@20.0.0/dist/tween.esm.js';
+
+  let loadedFont = null;
+  const fontLoader = new FontLoader();
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x404040)
@@ -126,8 +532,19 @@
   controls.dampingFactor = 0.1;
   controls.rotateSpeed = 0.5;
   
-  const light = new THREE.AmbientLight(0xffffff, 0.8);
+  const light = new THREE.AmbientLight(0xffffff, 1);
   scene.add(light);
+  
+  function animateLightIntensity(targetIntensity, duration = 500) {
+    new TWEEN.Tween({ intensity: light.intensity })
+      .to({ intensity: targetIntensity }, duration)
+      .easing(TWEEN.Easing.Quadratic.Out)
+      .onUpdate(function (obj) {
+        light.intensity = obj.intensity;
+      })
+      .start();
+  }
+  
   const dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
   dirLight.position.set(1, 1, 1).normalize();
   scene.add(dirLight);
@@ -143,49 +560,463 @@
   const gap = 0.04;
   const offset = (size + gap);
   
+  
+  // ✅ Átdolgozott karakterek: betűk beépítése a kockákba (csoportba)
+  const letterMeshes = [];
+  const faceOffsets = [
+    { dir: new THREE.Vector3(1, 0, 0), idx: 0 },   // Right
+    { dir: new THREE.Vector3(-1, 0, 0), idx: 1 },  // Left
+    { dir: new THREE.Vector3(0, 1, 0), idx: 2 },   // Top
+    { dir: new THREE.Vector3(0, -1, 0), idx: 3 },  // Bottom
+    { dir: new THREE.Vector3(0, 0, 1), idx: 4 },   // Front
+    { dir: new THREE.Vector3(0, 0, -1), idx: 5 },  // Back
+  ];
+  
   function createRubikCube() {
     for (let x = -1; x <= 1; x++) {
       for (let y = -1; y <= 1; y++) {
         for (let z = -1; z <= 1; z++) {
-    
+  
+          const cubeGroup = new THREE.Group();
+  
           const geometry = new RoundedBoxGeometry(size, size, size, 4, 0.1);
-    
           const faceMaterials = [];
-    
+  
           for (let i = 0; i < 6; i++) {
-            faceMaterials.push(new THREE.MeshBasicMaterial({ color: 0x101010 }));
+            faceMaterials.push(new THREE.MeshPhongMaterial({ color: 0x101010, transparent: true, opacity: 1, emissive: 0x000000 }));
           }
-    
-          // Külső oldalak színezése
-          if (x === 1) faceMaterials[0] = new THREE.MeshBasicMaterial({ color: 0x4169E1 }); // Right: kék
-          if (x === -1) faceMaterials[1] = new THREE.MeshBasicMaterial({ color: 0xFF7F50 }); // Left: zöld
-          if (y === 1) faceMaterials[2] = new THREE.MeshBasicMaterial({ color: 0xffffff }); // TOP: fehér
-          if (y === -1) faceMaterials[3] = new THREE.MeshBasicMaterial({ color: 0x32CD32 }); // bottom: sárga
-          if (z === 1) faceMaterials[4] = new THREE.MeshBasicMaterial({ color: 0xDC143C }); // FRONT: piros
-          if (z === -1) faceMaterials[5] = new THREE.MeshBasicMaterial({ color: 0xFFD700 }); // Back: narancs
-    
-          const cube = new THREE.Mesh(geometry, faceMaterials);
-    
-          cube.position.set(x * (size + gap), y * (size + gap), z * (size + gap));
-          rubikGroup.add(cube);
-          cubes.push(cube);
+  
+          if (x === 1) faceMaterials[0] = new THREE.MeshPhongMaterial({ color: 0x4169E1, transparent: true, opacity: 1, emissive: 0x000000 });
+          if (x === -1) faceMaterials[1] = new THREE.MeshPhongMaterial({ color: 0xFF7F50, transparent: true, opacity: 1, emissive: 0x000000 });
+          if (y === 1) faceMaterials[2] = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 1, emissive: 0x000000 });
+          if (y === -1) faceMaterials[3] = new THREE.MeshPhongMaterial({ color: 0xFFD700, transparent: true, opacity: 1, emissive: 0x000000 });
+          if (z === 1) faceMaterials[4] = new THREE.MeshPhongMaterial({ color: 0xDC143C, transparent: true, opacity: 1, emissive: 0x000000 });
+          if (z === -1) faceMaterials[5] = new THREE.MeshPhongMaterial({ color: 0xff6700, transparent: true, opacity: 1, emissive: 0x000000 });
+  
+          const cubeMesh = new THREE.Mesh(geometry, faceMaterials);
+          cubeGroup.add(cubeMesh);
+  
+          cubeGroup.position.set(x * offset, y * offset, z * offset);
+          cubeGroup.userData.originalPosition = { x, y, z };
+          cubeGroup.userData.logicalPosition = { x, y, z };
+          cubeGroup.userData.isRubikCube = true;
+          cubes.push(cubeGroup);
+          rubikGroup.add(cubeGroup);
         }
       }
     }
   }
+
+  function applyFaceLetters(faceData = {}) {
+    if (!loadedFont) return;
+
+      // 🔥 Korábbi betűk törlése
+      cubes.forEach(cube => {
+        const toRemove = cube.children.filter(child => child.type === "Group");
+        toRemove.forEach(child => cube.remove(child));
+      });
+
+
+    const sideKeys = ["right", "left", "top", "bottom", "front", "back"];
+    const faceCharMap = sideKeys.map(k => (faceData[k] || " ".repeat(9)).padEnd(9).slice(0, 9).split(""));
   
+    const textOptions = {
+      font: loadedFont,
+      size: 0.3,
+      height: 0,
+      curveSegments: 12,
+      bevelEnabled: true,
+      bevelThickness: 0.01,
+      bevelSize: 0.01,
+      bevelOffset: 0,
+      bevelSegments: 1
+    };
+  
+    cubes.forEach(cube => {
+      const { x: gridX, y: gridY, z: gridZ } = cube.userData.originalPosition;
+
+  
+      faceOffsets.forEach(({ dir, idx }) => {
+        const threshold = 0.2;
+        if (Math.abs(dir.x) > 0 && Math.abs(gridX - dir.x) > threshold) return;
+        if (Math.abs(dir.y) > 0 && Math.abs(gridY - dir.y) > threshold) return;
+        if (Math.abs(dir.z) > 0 && Math.abs(gridZ - dir.z) > threshold) return;
+  
+        const toIndex = v => v === -1 ? 0 : v === 0 ? 1 : 2;
+        let row = -1, col = -1;
+        switch (idx) {
+          case 0: row = toIndex(-gridY); col = 2 - toIndex(gridZ); break;   // Right (tükrözve)
+          case 1: row = toIndex(-gridY); col = 2 - toIndex(-gridZ); break;  // Left (tükrözve)
+          case 2: row = toIndex(gridZ); col = toIndex(gridX); break;
+          case 3: row = toIndex(-gridZ);  col = toIndex(gridX); break;
+          case 4: row = toIndex(-gridY); col = toIndex(gridX); break;
+          case 5: row = toIndex(-gridY); col = toIndex(-gridX); break;
+        }
+  
+        if (row < 0 || row > 2 || col < 0 || col > 2) return;
+        const charIndex = row * 3 + col;
+        const faceChar = faceCharMap[idx][charIndex];
+        if (!faceChar || faceChar === " ") return;
+  
+        const textGeo = new TextGeometry(faceChar, textOptions);
+        const textMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+        const textMesh = new THREE.Mesh(textGeo, textMat);
+  
+        const sideNormal = dir;
+        //const worldPos = new THREE.Vector3(0, 0, 0).add(sideNormal.clone().multiplyScalar(size / 2 + 0.00));
+        //textGeo.computeBoundingBox();
+        //const textSize = textGeo.boundingBox.getSize(new THREE.Vector3());
+        //const centerOffset = new THREE.Vector3(-textSize.x / 2, -textSize.y / 2, -textSize.z / 2);
+        //textMesh.position.copy(worldPos.clone().add(centerOffset));
+        //textMesh.position.addScaledVector(sideNormal, 0);
+
+        textGeo.computeBoundingBox();
+        const center = textGeo.boundingBox.getCenter(new THREE.Vector3());
+        
+        // ⬇️ Betű közepének eltolása az origóra
+        textMesh.position.set(0, 0, 0).sub(center);
+
+
+        // Új pozíció és forgatás beállítás oldalanként
+        switch (idx) {
+          case 0: // Right (+X)
+            textMesh.rotation.set(0, Math.PI / 2, 0);
+            textMesh.position.set(0.5, -0.1, 0.1);
+            break;
+          case 1: // Left (-X)
+            textMesh.rotation.set(0, -Math.PI / 2, 0);
+            textMesh.position.set(-0.5, -0.1, -0.1);
+            break;
+          case 2: // Top (+Y)
+            textMesh.rotation.set(-Math.PI / 2, 0, 0);
+            textMesh.position.set(-0.1, 0.5, 0.1);
+            break;
+          case 3: // Bottom (-Y)
+            textMesh.rotation.set(Math.PI / 2, 0, 0);
+            textMesh.position.set(-0.1, -0.5 , -0.1);
+            break;
+          case 4: // Front (+Z)
+            textMesh.rotation.set(0, 0, 0);
+            textMesh.position.set(-0.1, -0.1, 0.5);
+            break;
+          case 5: // Back (-Z)
+            textMesh.rotation.set(0, Math.PI, 0);
+            textMesh.position.set(0.1, -0.1, -0.5);
+            break;
+        }
+		
+		// Finom mélységi pozíció a lap síkjára
+        //textMesh.position.add(sideNormal.clone().multiplyScalar(0));
+
+  
+        const pivot = new THREE.Group();
+        pivot.add(textMesh);
+        
+        // Pozíció a lap síkjára
+        pivot.position.copy(sideNormal.clone().multiplyScalar(0));
+        cube.add(pivot);
+      });
+    });
+  }
+  
+  
+  
+    
+  fontLoader.load('RobotoMono.json', font => {
+    loadedFont = font;
+    initFromUrl().then(() => {
+    if (!window.location.search.includes("c=")) {
+      applyFaceLetters({
+        front:  "SEND_YOUR",
+        back:   "AAAAAAAAA",
+        left:   "AAAAAAAAA",
+        right:  "MESSAGES_",
+        top:    "___SECRET",
+        bottom: "CURIOUS??"
+      });
+    }
+	if (window.location.search.includes('c=')) {
+    const inputWrapper = document.getElementById('inputWrapper');
+    inputWrapper.style.height = '300px';
+    currentHeight = 100;
+    }
+    });
+  });
+  
+  
+    function updateLogicalPositions() {
+    cubes.forEach(cube => {
+      cube.userData.logicalPosition = {
+        x: Math.round(cube.position.x / offset),
+        y: Math.round(cube.position.y / offset),
+        z: Math.round(cube.position.z / offset)
+      };
+    });
+  }
+   
+
+  
+  function highlightStep(stepIndex) {
+    if (!guideEnabled) {
+      animateLightIntensity(4);
+      cubes.forEach(cube => {
+        cube.children[0].material.forEach(mat => {
+          mat.emissive.set(0x000000);
+          mat.opacity = 1;
+        });
+      });
+      return;
+    }
+  
+  
+  
+    animateLightIntensity(4);
+    cubes.forEach(cube => {
+      cube.children[0].material.forEach(mat => {
+        mat.emissive.set(0x000000);
+        mat.opacity = 0.5;
+      });
+    });
+  
+    let targets = [];
+	const useOriginal = stepIndex <= 20;
+  
+    if (stepIndex === 0) { // középkockák
+      targets = cubes.filter(cube => {
+        const pos = useOriginal ? cube.userData.originalPosition : cube.userData.logicalPosition;
+        return (pos.x === 0 && pos.y !== 0 && pos.z === 0) ||
+               (pos.x === 0 && pos.y === 0 && pos.z !== 0) ||
+               (pos.x !== 0 && pos.y === 0 && pos.z === 0);
+      });
+    }
+    else if (stepIndex === 1) { // élkockák
+      targets = cubes.filter(cube => {
+        const pos = useOriginal ? cube.userData.originalPosition : cube.userData.logicalPosition;
+        return (Math.abs(pos.x) + Math.abs(pos.y) + Math.abs(pos.z)) === 2;
+      });
+    }
+    else if (stepIndex === 2) { // sarokkockák
+      targets = cubes.filter(cube => {
+        const pos = useOriginal ? cube.userData.originalPosition : cube.userData.logicalPosition;
+        return (Math.abs(pos.x) + Math.abs(pos.y) + Math.abs(pos.z)) === 3;
+      });
+    }
+    else if (stepIndex === 3) { // felső réteg (U)
+      const maxY = Math.max(...cubes.map(cube => cube.position.y));
+      targets = cubes.filter(cube => Math.abs(cube.position.y - maxY) < 0.2);
+    }
+    else if (stepIndex === 4) { // alsó réteg (D)
+      const minY = Math.min(...cubes.map(cube => cube.position.y));
+      targets = cubes.filter(cube => Math.abs(cube.position.y - minY) < 0.2);
+    }
+    else if (stepIndex === 5) { // jobb oldal (R)
+      const maxX = Math.max(...cubes.map(cube => cube.position.x));
+      targets = cubes.filter(cube => Math.abs(cube.position.x - maxX) < 0.2);
+    }
+    else if (stepIndex === 6) { // bal oldal (L)
+      const minX = Math.min(...cubes.map(cube => cube.position.x));
+      targets = cubes.filter(cube => Math.abs(cube.position.x - minX) < 0.2);
+    }
+    else if (stepIndex === 7) { // front oldal (F)
+      const maxZ = Math.max(...cubes.map(cube => cube.position.z));
+      targets = cubes.filter(cube => Math.abs(cube.position.z - maxZ) < 0.2);
+    }
+    else if (stepIndex === 8) { // fehér kereszt
+      targets = cubes.filter(cube => {
+        const pos = useOriginal ? cube.userData.originalPosition : cube.userData.logicalPosition;
+        return (pos.y === 1) && (pos.x === 0 || pos.z === 0);
+      });
+    }
+    else if (stepIndex === 9) { // fehér sarkok
+      targets = cubes.filter(cube => {
+        const pos = useOriginal ? cube.userData.originalPosition : cube.userData.logicalPosition;
+        return (pos.y === 1) && (pos.x !== 0) && (pos.z !== 0);
+      });
+    }
+    // 11: Fordítsd meg a kockát (nem kiemel semmit)
+    // 12: Él keresése (felső réteg, sárga nélkül)
+    else if (stepIndex === 12) {
+      targets = cubes.filter(cube => {
+        const pos = cube.userData.logicalPosition;
+        const isEdge = (Math.abs(pos.x) + Math.abs(pos.y) + Math.abs(pos.z)) === 2;
+        const isTop = pos.y === 1;
+        const hasYellow = cube.material.some(mat => mat.color.getHexString() === 'ff6700');
+        return isEdge && isTop && !hasYellow;
+      });
+    }
+   
+    // 13: Él igazítása (felső élkockák középen)
+    else if (stepIndex === 13) {
+      targets = cubes.filter(cube => {
+        const pos = cube.userData.logicalPosition;
+        return pos.y === 1 && ((pos.x === 0 && pos.z !== 0) || (pos.z === 0 && pos.x !== 0));
+      });
+    }
+   
+    // 14: Döntés: balra vagy jobbra (összes élkocka felül)
+    else if (stepIndex === 14) {
+      targets = cubes.filter(cube => {
+        const pos = cube.userData.logicalPosition;
+        const isEdge = (Math.abs(pos.x) + Math.abs(pos.y) + Math.abs(pos.z)) === 2;
+        return pos.y === 1 && isEdge;
+      });
+    }
+   
+    // 15: Ismétlés – felső élkockák újra
+    else if (stepIndex === 15) {
+      targets = cubes.filter(cube => {
+        const pos = cube.userData.logicalPosition;
+        const isEdge = (Math.abs(pos.x) + Math.abs(pos.y) + Math.abs(pos.z)) === 2;
+        return pos.y === 1 && isEdge;
+      });
+    }
+  
+    targets.forEach(cube => {
+      cube.children[0].material.forEach(mat => {
+        mat.emissive.set(0x444444);
+        mat.opacity = 1;
+      });
+    });
+  }
+
   createRubikCube();
   
-  camera.position.set(5, 5, 10);
+  camera.position.set(4, 4, 6);
   controls.target.set(0, 0, 0);
   controls.update();
   
+  
+  async function initFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const compressed = params.get('c');
+    if (!compressed) return;
+  
+    try {
+      const json = LZString.decompressFromEncodedURIComponent(compressed);
+      if (!json) {
+        console.error("Nem sikerült dekódolni a tömörített adatot.");
+        return;
+      }
+  
+      const decoded = JSON.parse(json);
+  
+      rubikGroup.visible = false;
+      applyFaceLetters(decoded);
+ 
+      // Azonnali forgatások
+      if (decoded.moves && Array.isArray(decoded.moves)) {
+        for (const move of decoded.moves) {
+          const layerFilter = cube => Math.abs(cube.position[move.axis] - move.layerValue) < 0.2;
+          applyInstantRotation(layerFilter, move.axis, move.direction);
+        }
+        updateLogicalPositions();
+      }
+  
+      rubikGroup.visible = true;
+  
+    } catch (e) {
+      console.error("Hiba történt az URL adat visszafejtésekor:", e);
+    }
+  }
+  
+  function applyInstantRotation(layerFilter, axis, direction) {
+    const selected = cubes.filter(layerFilter);
+    const group = new THREE.Group();
+    selected.forEach(cube => group.add(cube));
+    rubikGroup.add(group);
+  
+    const angle = direction * Math.PI / 2;
+    const rotMatrix = new THREE.Matrix4();
+    if (axis === 'x') rotMatrix.makeRotationX(angle);
+    if (axis === 'y') rotMatrix.makeRotationY(angle);
+    if (axis === 'z') rotMatrix.makeRotationZ(angle);
+  
+    selected.forEach(cube => {
+      cube.applyMatrix4(rotMatrix);
+      cube.updateMatrixWorld(true);
+      rubikGroup.add(cube); // vissza a főcsoportba
+    });
+  
+    rubikGroup.remove(group);
+    updateLogicalPositions();
+  }
+  
+  
+  const steps = [
+    { title: "1: Az oldalak", desc: "Rubik-kocka oldalai: Fehér (felső), Sárga (alsó), Piros (elülső), Narancs (hátsó), Kék (jobb), Zöld (bal). Ezekhez viszonyítunk." },
+    { title: "2: Élkockák", desc: "Két színt tartalmazó kockák, két oldal találkozásánál helyezkednek el." },
+    { title: "3: Sarokkockák", desc: "Három színt tartalmazó kockák, a sarkokban helyezkednek el." },
+    { title: "4: Up forgatás", desc: "Felső réteg forgatása óramutó szerint (U) és ellentétesen (U')" },
+    { title: "5: Down forgatás", desc: "Alsó réteg forgatása óramutató szerint (D) és ellentétesen (D')." },
+    { title: "6: Right forgatás", desc: "Jobb oldali réteg forgatása óramutató szerint (R) és ellentétesen (R')" },
+    { title: "7: Left forgatás", desc: "Bal oldali réteg forgatása óramutató szerint (L) és ellentétesen (L')" },
+    { title: "8: Front forgatás", desc: "Az elülső (piros) oldal forgatása az óramutató járásával megegyezően (F), vagy ellentétesen (F')." },
+    { title: "9: Fehér kereszt", desc: "Keresd a fehér oldalt és a hozzá tartozó élkockákat, próbáld úgy forgatni, hogy az élkockák fehér színe a fehér oldalon legyen és másik színe megeggyezen a másik oldallal." },
+    { title: "10: Fehér sarkok", desc: "Két jobb oldali sarok (felső és alsó) kicserélésére használd az R' D' R D algoritmust. Ha kell forgasd a kockát, a végére a 4 sarok legyen a helyén." },
+    
+    { title: "11: Fordítsd meg a kockát", desc: "Mostantól a sárga oldal legyen felül, így a középső élek könnyen elérhetők lesznek." },
+    { title: "12: Olyan élkocka keresése", desc: "Keresd a felső rétegben azokat az élkockákat, amelyek nem tartalmaznak sárga színt." },
+    { title: "13: Igazítás a színhez", desc: "Forgasd a felső réteget úgy, hogy az élkocka egyik színe megegyezzen a középső réteg középső színével (a megfelelő oldalán)." },
+    { title: "14: Döntés: balra vagy jobbra", desc: "Nézd meg, hogy az él másik színe melyik oldalon van. Ha balra kell helyezni: U' L' U L U F U' F'. Ha jobbra: U R U' R' U' F' U F." },
+    { title: "15: Ismétlés más élekre", desc: "Ismételd meg a fenti lépéseket minden olyan élkockánál, amely nem tartalmaz sárgát és még nincs helyén." },
+    
+    { title: "16: Sárga kereszt", desc: "Használd a F R U R' U' F' algoritmust a sárga alakzat kialakításához a felső oldalon." },
+    { title: "17: Sárga sarkok helyre tétele", desc: "Használd az U R U' L' U R' U' L algoritmust." },
+    { title: "18: Sárga sarkok elforgatása", desc: "R' D' R D többször ismételve minden saroknál." },
+    { title: "19: Felső élkockák elforgatása", desc: "Használd a F2 U L R' F2 L' R U F2 algoritmust a teljes kirakáshoz." }
+  ];
+
+  let currentStep = 0;
+
+  // Frissítjük updateTutorial függvényt
+  function updateTutorial() {
+    const text = document.getElementById("tutorialText");
+    text.innerHTML = `<strong>${steps[currentStep].title}</strong>${steps[currentStep].desc}`;
+    highlightStep(currentStep);
+    //createFancyArrowForStep(currentStep);
+  }
+
+  document.getElementById("prevStep").addEventListener("click", () => {
+    if (currentStep > 0) {
+      currentStep--;
+      updateTutorial();
+    }
+  });
+
+  document.getElementById("nextStep").addEventListener("click", () => {
+    if (currentStep < steps.length - 1) {
+      currentStep++;
+      updateTutorial();
+    }
+  });
+  
+  document.getElementById('toggleGuideButton').addEventListener('click', () => {
+  guideEnabled = !guideEnabled;
+
+  const tutorialPanel = document.querySelector('.tutorial-panel');
+  if (guideEnabled) {
+    tutorialPanel.style.display = 'flex';
+  } else {
+    tutorialPanel.style.display = 'none';
+    cubes.forEach(cube => {
+      cube.children[0].material.forEach(mat => {
+        mat.emissive.set(0x000000);
+        mat.opacity = 1;
+      });
+      });
+    }
+
+  updateTutorial(); // hogy rögtön frissüljön a megjelenés is
+  });
+  
+  let guideEnabled = false;
   let selectedCube = null;
   let selectedFaceNormal = null;
   let selectedLocalRight = null;
   let selectedLocalUp = null;
   let isDragging = false;
   let dragStart = new THREE.Vector2();
+  let moveHistory = [];
   
   function onPointerDown(x, y) {
     mouse.x = (x / window.innerWidth) * 2 - 1;
@@ -195,7 +1026,7 @@
     const intersects = raycaster.intersectObjects(cubes);
   
     if (intersects.length > 0) {
-      selectedCube = intersects[0].object;
+      selectedCube = intersects[0].object.parent;
       selectedFaceNormal = intersects[0].face.normal.clone().applyMatrix3(new THREE.Matrix3().getNormalMatrix(selectedCube.matrixWorld)).normalize();
   
       const globalUp = new THREE.Vector3(0, 1, 0);
@@ -230,6 +1061,7 @@
       const moveVector = new THREE.Vector2(dragVector.x, -dragVector.y);
       let rightAmount, upAmount;
       let axis, layerFilter, direction;
+      let layerValue;
   
       if (Math.abs(selectedFaceNormal.z) > 0.9) {
         // FRONT/BACK
@@ -243,6 +1075,7 @@
           direction = selectedFaceNormal.z > 0
             ? (rightAmount > 0 ? 1 : -1)
             : (rightAmount > 0 ? 1 : -1);
+			layerValue = nearestLayerValue(selectedCube.position, axis);
         } else {
           // Fel/Le húzás
           layerFilter = cube => Math.abs(cube.position.x - selectedCube.position.x) < 0.2;
@@ -250,6 +1083,7 @@
           direction = selectedFaceNormal.z > 0
             ? (upAmount > 0 ? -1 : 1)
             : (upAmount > 0 ? 1 : -1);
+			layerValue = nearestLayerValue(selectedCube.position, axis);
         }
       } else if (Math.abs(selectedFaceNormal.x) > 0.9) {
         // LEFT/RIGHT
@@ -263,6 +1097,7 @@
           direction = selectedFaceNormal.x > 0
             ? (rightAmount > 0 ? 1 : -1)
             : (rightAmount > 0 ? 1 : -1);
+			layerValue = nearestLayerValue(selectedCube.position, axis);
         } else {
           // Fel/Le húzás
           layerFilter = cube => Math.abs(cube.position.z - selectedCube.position.z) < 0.2;
@@ -270,6 +1105,7 @@
           direction = selectedFaceNormal.x > 0
             ? (upAmount > 0 ? 1 : -1)
             : (upAmount > 0 ? -1 : 1);
+			layerValue = nearestLayerValue(selectedCube.position, axis);
         }
       } else if (Math.abs(selectedFaceNormal.y) > 0.9) {
         // TOP/BOTTOM
@@ -283,6 +1119,7 @@
           direction = selectedFaceNormal.y > 0
             ? (rightAmount > 0 ? -1 : 1)
             : (rightAmount > 0 ? 1 : -1);
+			layerValue = nearestLayerValue(selectedCube.position, axis);
         } else {
           // Fel/Le húzás
           layerFilter = cube => Math.abs(cube.position.x - selectedCube.position.x) < 0.2;
@@ -290,18 +1127,25 @@
           direction = selectedFaceNormal.y > 0
             ? (upAmount > 0 ? -1 : 1)
             : (upAmount > 0 ? -1 : 1);
+			layerValue = nearestLayerValue(selectedCube.position, axis);
         }
       }
-  
-      rotateLayer(layerFilter, axis, direction);
-    } else {
-      controls.enabled = true;
-    }
+	  
+	  
+if (layerFilter && axis && direction !== undefined && layerValue !== undefined) {
+  rotateLayer(layerFilter, axis, direction, layerValue);
+    console.log("Forgatás.", { layerFilter, axis, direction, layerValue });
+
+} else {
+  console.warn("Forgatás kihagyva: valamelyik paraméter hiányzik.", { layerFilter, axis, direction, layerValue });
+  controls.enabled = true;
+}
+}
   
     isDragging = false;
     selectedCube = null;
     selectedFaceNormal = null;
-  }
+  };
    
     window.addEventListener('mousedown', (e) => {
     onPointerDown(e.clientX, e.clientY);
@@ -323,35 +1167,49 @@
     }
   });
   
-  function rotateLayer(filterFunc, axis, direction) {
-    return new Promise((resolve) => {
-      const group = new THREE.Group();
-      rubikGroup.add(group);
-      const selected = cubes.filter(filterFunc);
-      selected.forEach(cube => group.add(cube));
-  
-      const targetRotation = { x: group.rotation.x, y: group.rotation.y, z: group.rotation.z };
-  
-      if (axis === 'x') targetRotation.x += direction * Math.PI / 2;
-      if (axis === 'y') targetRotation.y += direction * Math.PI / 2;
-      if (axis === 'z') targetRotation.z += direction * Math.PI / 2;
-  
-      new TWEEN.Tween(group.rotation)
-        .to(targetRotation, 500)
-        .easing(TWEEN.Easing.Quadratic.Out)
-        .onComplete(() => {
-          selected.forEach(cube => {
-            group.updateMatrixWorld();
-            cube.applyMatrix4(group.matrix);
-            rubikGroup.add(cube);
-          });
-          rubikGroup.remove(group);
-          controls.enabled = true;
-          resolve();
-        })
-        .start();
-    });
+
+  function rotateLayer(filterFunc, axis, direction, layerValue = null) {
+    if (layerValue !== null) {
+      moveHistory.push({ axis, direction, layerValue });
+	  console.log("Forgatás mentve:", { axis, direction, layerValue });
+    }
+      return new Promise((resolve) => {
+        const group = new THREE.Group();
+        rubikGroup.add(group);
+        const selected = cubes.filter(filterFunc);
+        selected.forEach(cube => group.add(cube));
+    
+        const targetRotation = { x: group.rotation.x, y: group.rotation.y, z: group.rotation.z };
+  	  
+        if (axis === 'x') targetRotation.x += direction * Math.PI / 2;
+        if (axis === 'y') targetRotation.y += direction * Math.PI / 2;
+        if (axis === 'z') targetRotation.z += direction * Math.PI / 2;
+    
+        new TWEEN.Tween(group.rotation)
+          .to(targetRotation, 500)
+          .easing(TWEEN.Easing.Quadratic.Out)
+          .onComplete(() => {
+            selected.forEach(cube => {
+              group.updateMatrixWorld();
+              cube.applyMatrix4(group.matrix);
+              rubikGroup.add(cube);
+            });
+            rubikGroup.remove(group);
+            controls.enabled = true;
+            resolve();
+          })
+          .start();
+      });
   }
+
+  function nearestLayerValue(position, axis) {
+    const raw = position[axis];
+    const options = [-1.04, 0, 1.04];
+    return options.reduce((closest, val) =>
+      Math.abs(val - raw) < Math.abs(closest - val) ? val : closest
+    );
+  }
+
   
   function animate() {
     requestAnimationFrame(animate);
@@ -360,6 +1218,9 @@
     renderer.render(scene, camera);
   }
   animate();
+  updateTutorial();
+  document.querySelector('.tutorial-panel').style.display = 'none';
+
   
   document.getElementById('shuffleButton').addEventListener('click', () => {
     shuffleCube(20);
@@ -375,13 +1236,14 @@
   
     for (let i = 0; i < moves; i++) {
       const axis = axes[Math.floor(Math.random() * axes.length)];
-      const layerValue = layers[Math.floor(Math.random() * layers.length)];
+      const layerValue = [-1.04, 0, 1.04][Math.floor(Math.random() * 3)];
       const layerFilter = cube => Math.abs(cube.position[axis] - layerValue) < 0.2;
       const direction = Math.random() > 0.5 ? 1 : -1;
   
-      await rotateLayer(layerFilter, axis, direction);
+      await rotateLayer(layerFilter, axis, direction, layerValue);
       await new Promise(res => setTimeout(res, 100)); // Kis szünet, hogy szebb legyen
     }
+	updateLogicalPositions();
   }
 
   function resetCube() {
@@ -390,9 +1252,156 @@
       rubikGroup.remove(child);
     }
     cubes.length = 0;
-  
+    moveHistory = [];
     createRubikCube();
+	updateLogicalPositions();
   }
+  
+  document.getElementById('applyTextButton').addEventListener('click', () => {
+    const getVal = id => {
+  // ha a régi mező létezik (pl. face-front), használd azt
+  //const el = document.getElementById(id);
+  //if (el) return el.value.padEnd(9).slice(0, 9);
+
+  // ha nem, akkor próbáld összefűzni a 3×3 inputokból (pl. front-0...front-8)
+  const face = id.replace('face-', '');
+  let result = '';
+  for (let i = 0; i < 9; i++) {
+    const cell = document.getElementById(`${face}-${i}`);
+    result += cell && cell.value ? cell.value : ' ';
+  }
+  return result.padEnd(9).slice(0, 9);
+};
+    applyFaceLetters({
+      front:  getVal('face-front'),
+      back:   getVal('face-back'),
+      left:   getVal('face-left'),
+      right:  getVal('face-right'),
+      top:    getVal('face-top'),
+      bottom: getVal('face-bottom')
+    });
+  });
+  
+  document.getElementById('generateLinkButton').addEventListener('click', () => {
+    const getVal = id => {
+  // ha a régi mező létezik (pl. face-front), használd azt
+  //const el = document.getElementById(id);
+  //if (el) return el.value.padEnd(9).slice(0, 9);
+
+  // ha nem, akkor próbáld összefűzni a 3×3 inputokból (pl. front-0...front-8)
+  const face = id.replace('face-', '');
+  let result = '';
+  for (let i = 0; i < 9; i++) {
+    const cell = document.getElementById(`${face}-${i}`);
+    result += cell && cell.value ? cell.value : ' ';
+  }
+  return result.padEnd(9).slice(0, 9);
+};
+    const cubeState = {
+      front: getVal('face-front'),
+      back: getVal('face-back'),
+      left: getVal('face-left'),
+      right: getVal('face-right'),
+      top: getVal('face-top'),
+      bottom: getVal('face-bottom'),
+      moves: moveHistory
+    };
+    const json = JSON.stringify(cubeState);
+    const compressed = LZString.compressToEncodedURIComponent(json);
+    const shareUrl = `${location.origin}${location.pathname}?c=${compressed}`;
+    prompt("Copy this link:", shareUrl);
+	console.log("Mentett moveHistory:", moveHistory);
+  });
+  
+  document.querySelectorAll('.face-input').forEach((group, groupIndex, allGroups) => {
+    const inputs = group.querySelectorAll('input');
+    inputs.forEach((input, idx) => {
+      input.addEventListener('input', e => {
+        if (e.inputType !== 'deleteContentBackward' && input.value.length === 1) {
+          if (idx < 8) {
+            inputs[idx + 1].focus();
+          } else {
+            // Ugrás a következő csoport első mezőjére
+            const nextGroup = allGroups[groupIndex + 1];
+            if (nextGroup) {
+              const nextInput = nextGroup.querySelector('input');
+              if (nextInput) nextInput.focus();
+            }
+          }
+        }
+      });
+    });
+  });
+  
+  
+  const inputWrapper = document.getElementById('inputWrapper');
+  const dragHandle = document.getElementById('dragHandle');
+
+  let startY = 0;
+  let startHeight = 0;
+  let currentHeight = 100;
+  let isDragging2 = false;
+  
+  const minHeight = 300;     // csak gombok
+  const midHeight = 800;     // félig
+  const maxHeight = 1300; // teljesen nyitva
+  
+  dragHandle.addEventListener('mousedown', (e) => {
+    isDragging2 = true;
+    startY = e.clientY;
+    startHeight = currentHeight;
+    document.body.style.userSelect = 'none';
+  });
+  
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging2) return;
+    const delta = startY - e.clientY;
+    let newHeight = startHeight + delta;
+    newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
+    inputWrapper.style.height = `${newHeight}px`;
+    currentHeight = newHeight;
+  });
+  
+  window.addEventListener('mouseup', () => {
+    if (!isDragging2) return;
+    isDragging2 = false;
+    document.body.style.userSelect = '';
+  
+    // snap to nearest state
+    const distances = [minHeight, midHeight, maxHeight].map(h => Math.abs(currentHeight - h));
+    const nearest = [minHeight, midHeight, maxHeight][distances.indexOf(Math.min(...distances))];
+    inputWrapper.style.height = `${nearest}px`;
+    currentHeight = nearest;
+  });
+  
+  // Touch support
+  dragHandle.addEventListener('touchstart', (e) => {
+    isDragging2 = true;
+    startY = e.touches[0].clientY;
+    startHeight = currentHeight;
+  }, { passive: true });
+  
+  window.addEventListener('touchmove', (e) => {
+    if (!isDragging2) return;
+    const delta = startY - e.touches[0].clientY;
+    let newHeight = startHeight + delta;
+    newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
+    inputWrapper.style.height = `${newHeight}px`;
+    currentHeight = newHeight;
+  }, { passive: false });
+  
+  window.addEventListener('touchend', () => {
+    if (!isDragging2) return;
+    isDragging2 = false;
+  
+    const distances = [minHeight, midHeight, maxHeight].map(h => Math.abs(currentHeight - h));
+    const nearest = [minHeight, midHeight, maxHeight][distances.indexOf(Math.min(...distances))];
+    inputWrapper.style.height = `${nearest}px`;
+    currentHeight = nearest;
+  });
+  
+  
+
   
   
   window.addEventListener('resize', () => {
@@ -400,6 +1409,8 @@
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
+  
+  
 </script>
 </body>
 </html>
