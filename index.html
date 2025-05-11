@@ -2,392 +2,460 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>3D Rubik kocka)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SCUBIK - Personalized Rubik's Cube</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
   <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
   <style>
-
-  body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
-  canvas { display: block; }
-
-  .header {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    right: 20px;
-    display: flex;
-	flex-direction: column;
-    justify-content: center;
-    align-items: center;
-	gap: 12px;
-    z-index: 10;
-    pointer-events: none; /* hogy ne akadályozza a canvas interakciót */
-  }
-  
-  .header h1 {
-    font-family: "Rubik", sans-serif;
-	font-weight: 500;
-	color: white;
-    margin: 0;
-    font-size: 128px;
-    pointer-events: none;
-	padding-top: 64px;
-  }
-
-  .buttons {
-	display: flex;
-    flex-direction: row;
-    gap: 12px;
-    pointer-events: auto; /* a gombok kattinthatók maradjanak */
-  }
-
-  .buttons button {
-    padding: 10px 20px;
-    font-size: 32px;
-    border: none;
-    border-radius: 8px;
-    background-color: #333;
-	font-family: "Rubik", sans-serif;
-	font-weight: 400;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    display: grid;
-    align-items: center;
-  }
-  
-  .buttons button:hover {
-    background-color: #555;
-  }
-  
-  .input-wrapper {
-    position: fixed;
-    bottom: 0;
-    left: 5vw;
-    right: 5vw;
-    width: 90vw;
-	height: 500px;
-    background-color: rgba(0, 0, 0, 0.85);
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
-    transition: height 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 1000;
-    overflow: hidden;
-    touch-action: none;
-  }
-  
-  .input-wrapper p {
-   color: white;
-   font-size: 32px;
-  }
-  
-  .drag-handle {
-    width: 64px;
-    height: 8px;
-    background: #666;
-    border-radius: 4px;
-    margin: 8px 0;
-    cursor: grab;
-  }
-  
-  .accordion-content {
-    flex: 1;
-    overflow-y: auto;
-    width: 100%;
-    padding: 8px 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-  }
-      
-  .accordion-toggle {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
-  
-  #toggleInputPanel {
-    font-size: 32px;
-    padding: 6px 20px;
-    background-color: #333;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    z-index: 9000;
-  }
-  
-  .accordion-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-  }
-  
-  .input-panel {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 16px;
-    
-  }
-  
-  .button-row {
-    position: fixed;
-    display: grid;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-	bottom: 0px;
-    gap: 16px;
-    padding-bottom: 16px;
-	padding-top: 16px; 
-	z-index: 1000;
-	background-color: #000;
-	width: 86vw;
-	left: 7vw;
-	grid-template-columns: repeat(4, 22%);
-    grid-column-gap: auto;
-  }
-  
-  
- 
-   .face-input {
-    display: grid;
-	grid-template-columns: repeat(3, 50px);
-    grid-template-rows: repeat(3, 50px);
-    gap: 7px;
-    padding: 4px;
-    border-radius: 8px;
-	color: white;
-	opacity: 0.7;
-  }
-  
-  .face-input input {
-    width: 50px;
-    height: 50px;
-    font-size: 20px;
-    text-align: center;
-    border: none;
-    outline: none;
-    text-transform: uppercase;
-    caret-color: white;
-	color: white;
-	background-color: #222;
-	
-  }
-  
-  .input-panel button {
-    font-size: 18px;
-    padding: 6px 16px;
-    background: #444;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  
-  
-  .tutorial-panel {
-    position: absolute;
-    bottom: 30px;
-    width: 500px;
-    height: 124px;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    font-family: "Rubik", sans-serif;
-    font-size: 20px;
-    padding: 12px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 20;
-    border-radius: 8px;
-  }
-
-  .tutorial-buttonL {
-    flex: 0 0 10%;
-    height: 100px;
-    border-radius: 0px 8px 8px 0px;
-	padding: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #000;
-    cursor: pointer;
-    font-size: 32px;
-    font-weight: bold;
-    transition: background-color 0.3s;
-    user-select: none;
-  }
-
-  .tutorial-buttonR {
-    flex: 0 0 10%;
-    height: 100px;
-    border-radius: 8px 0px 0px 8px;
-	padding: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #000;
-    cursor: pointer;
-    font-size: 32px;
-    font-weight: bold;
-    transition: background-color 0.3s;
-    user-select: none;
-  }
-
-  .tutorial-buttonL:hover {
-    background-color: #444;
-  }
-
-  .tutorial-buttonR:hover {
-    background-color: #444;
-  }
-
-  .tutorial-text {
-    flex: 1;
-    text-align: center;
-    padding: 0 16px;
-  }
-
-  .tutorial-text strong {
-    font-size: 24px;
-    display: block;
-    margin-bottom: 4px;
-  }
-  
-
-  @media (min-width: 0px) and (max-width: 1000px) {
-    .header h1 {
-      color: white;
-      margin: 0;
-      font-size: 200px;
-      pointer-events: none;
-      padding-top: 64px;
+    :root {
+      --primary: #ff4081;
+      --primary-dark: #c60055;
+      --primary-light: #ff79b0;
+      --secondary: #303F9F;
+      --text-light: #ffffff;
+      --text-dark: #212121;
+      --background-dark: #121212;
+      --surface: #1e1e1e;
+      --surface-light: #2c2c2c;
+      --surface-lighter: #383838;
+      --cube-red: #f44336;
+      --cube-blue: #2196f3;
+      --cube-orange: #ff9800;
+      --cube-coral: #ff6f61;
+      --cube-white: #ffffff;
+      --cube-yellow: #ffeb3b;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+      --transition: all 0.3s ease;
     }
-	
-	.input-panel {
-      flex-wrap: wrap;
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Rubik', sans-serif;
+      background-color: var(--background-dark);
+      color: var(--text-light);
+    }
+
+    canvas {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 10;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+      pointer-events: none;
+    }
+  
+    .header h1 {
+      font-family: "Rubik", sans-serif;
+      font-weight: 700;
+      color: var(--text-light);
+      margin: 0;
+      font-size: 5rem;
+      text-shadow: 0 0 15px rgba(255,64,129,0.5);
+      letter-spacing: 2px;
+      pointer-events: none;
+    }
+
+    .buttons {
+      display: flex;
       flex-direction: row;
+      gap: 12px;
+      margin-top: 20px;
+      pointer-events: auto;
+    }
+
+    .button {
+      padding: 12px 16px;
+      font-size: 1rem;
+      border: none;
+      border-radius: var(--radius-md);
+      background-color: var(--surface-light);
+      font-family: "Rubik", sans-serif;
+      font-weight: 500;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow);
+    }
+    
+    .button:hover {
+      background-color: var(--surface-lighter);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .button-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .button-primary:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .button-icon {
+      display: flex;
+      align-items: center;
       justify-content: center;
     }
-  
-    .button-row {
-      flex-direction: row;
-    }
-  
-    .buttons button {
-      font-size: 40px;
-    }
-	
-	.face-input {
-      display: grid;
-      grid-template-columns: repeat(3, 100px);
-      grid-template-rows: repeat(3, 100px);
-      gap: 7px;
-      padding: 4px;
-      border-radius: 8px;
+
+    .input-panel-toggle {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      background-color: var(--primary);
       color: white;
-      
+      border: none;
+      border-radius: 30px;
+      padding: 12px 25px;
+      font-size: 1.3rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow-lg);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .input-panel-toggle:hover {
+      background-color: var(--primary-dark);
+      transform: translateX(-50%) translateY(-2px);
+    }
+
+    .input-wrapper {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 0;
+      background-color: var(--surface);
+      border-top-left-radius: var(--radius-lg);
+      border-top-right-radius: var(--radius-lg);
+      transition: height 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 1000;
+      overflow: hidden;
+      box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.3);
+    }
+    
+    .input-wrapper.open {
+      height: 70vh;
+    }
+    
+    .input-header {
+      width: 100%;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-bottom: 1px solid var(--surface-light);
+      margin-bottom: 20px;
+    }
+    
+    .drag-handle {
+      width: 40px;
+      height: 5px;
+      background: var(--surface-lighter);
+      border-radius: 2.5px;
+      margin-bottom: 16px;
+      cursor: grab;
+    }
+
+    .input-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text-light);
+      text-align: center;
+    }
+
+    .input-subtitle {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      max-width: 400px;
+    }
+    
+    .accordion-content {
+      flex: 1;
+      overflow-y: auto;
+      width: 100%;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+    
+    .input-panel {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      max-width: 740px;
+      margin: 0 auto;
+    }
+    
+    .face-input {
+      display: grid;
+      grid-template-columns: repeat(3, 50px);
+      grid-template-rows: repeat(3, 50px);
+      gap: 4px;
+      padding: 12px;
+      border-radius: var(--radius-md);
+      position: relative;
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+    }
+
+    .face-input::before {
+      content: attr(data-face-name);
+      position: absolute;
+      top: -16px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.8);
     }
     
     .face-input input {
-      width: 100px;
-      height: 100px;
-      font-size: 40px;
+      width: 100%;
+      height: 100%;
+      font-size: 1.25rem;
       text-align: center;
       border: none;
+      border-radius: var(--radius-sm);
       outline: none;
-      text-transform: uppercase;
       caret-color: white;
-      color: white;
-      background-color: #222;
+      color: var(--text-dark);
+      background-color: rgba(255,255,255,0.9);
+      transition: var(--transition);
+      font-family: 'Rubik', sans-serif;
+    }
+    
+    .face-input input:focus {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.5);
+    }
+
+    .action-buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      width: 100%;
+      max-width: 600px;
+      padding: 16px;
+      border-top: 1px solid var(--surface-light);
+      background-color: var(--surface);
+    }
+
+    .action-button {
+      padding: 12px;
+      font-size: 1rem;
+      border: none;
+      border-radius: var(--radius-md);
+      background-color: var(--surface-light);
+      font-family: "Rubik", sans-serif;
+      font-weight: 500;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .action-button-primary {
+      background-color: var(--primary);
+    }
+    
+    .action-button:hover {
+      background-color: var(--surface-lighter);
+      transform: translateY(-2px);
+    }
+
+    .action-button-primary:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .material-symbols-outlined {
+      font-size: 24px;
     }
 
     .tutorial-panel {
       position: absolute;
-      bottom: 32px;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
       width: 90%;
-	  height: 200px;
-      background-color: rgba(0, 0, 0, 0.5);
-      color: white;
-      font-family: "Rubik", sans-serif;
-      font-size: 32px;
-      padding: 24px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      max-width: 500px;
+      background-color: var(--surface);
+      color: var(--text-light);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
       z-index: 20;
-      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
     }
-  
-    .tutorial-buttonL {
-      flex: 0 0 10%;
-      height: 150px;
-      border-radius: 0px 8px 8px 0px;
-      padding: 16px;
+
+    .tutorial-header {
+      background-color: var(--secondary);
+      padding: 12px 16px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      background-color: #000;
-      cursor: pointer;
-      font-size: 32px;
-      font-weight: bold;
-      transition: background-color 0.3s;
-      user-select: none;
+      justify-content: space-between;
     }
-  
-    .tutorial-buttonR {
-      flex: 0 0 10%;
-      height: 150px;
-      border-radius: 8px 0px 0px 8px;
+
+    .tutorial-title {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .tutorial-content {
       padding: 16px;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: #000;
-      cursor: pointer;
-      font-size: 32px;
-      font-weight: bold;
-      transition: background-color 0.3s;
-      user-select: none;
+      flex-direction: column;
+      gap: 16px;
     }
-  
-    .tutorial-buttonL:hover {
-      background-color: #000;
-    }
-  
-    .tutorial-buttonR:hover {
-      background-color: #000;
-    }
-  
-    .tutorial-text {
-      flex: 1;
-      text-align: center;
-      padding: 0 16px;
-    }
-  
-    .tutorial-text strong {
-      font-size: 40px;
-      display: block;
+
+    .tutorial-step {
+      font-size: 1.125rem;
+      font-weight: 600;
       margin-bottom: 8px;
     }
-  
-  }
 
+    .tutorial-desc {
+      font-size: 0.875rem;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.8);
+    }
 
-	
+    .tutorial-nav {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-top: 1px solid var(--surface-light);
+    }
+
+    .tutorial-button {
+      background-color: transparent;
+      border: none;
+      color: var(--text-light);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Rubik', sans-serif;
+      font-size: 0.875rem;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+
+    .tutorial-button:hover {
+      background-color: var(--surface-light);
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 3rem;
+      }
+      
+      .input-wrapper.open {
+        height: 85vh;
+      }
+      
+      .face-input {
+        grid-template-columns: repeat(3, 40px);
+        grid-template-rows: repeat(3, 40px);
+      }
+      
+      .action-buttons {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Landscape mobile */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .input-wrapper.open {
+        height: 90vh;
+      }
+      
+      .input-panel {
+        gap: 16px;
+      }
+      
+      .face-input {
+        grid-template-columns: repeat(3, 32px);
+        grid-template-rows: repeat(3, 32px);
+        padding: 8px;
+      }
+      
+      .face-input input {
+        font-size: 1rem;
+      }
+    }
+
+    /* Large screens */
+    @media (min-width: 1200px) {
+      .header h1 {
+        font-size: 6rem;
+      }
+      
+      .face-input {
+        grid-template-columns: repeat(3, 60px);
+        grid-template-rows: repeat(3, 60px);
+      }
+    }
   </style>
   
-     <script type="importmap">
+  <script type="importmap">
     {
       "imports": {
         "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
@@ -399,114 +467,160 @@
         "npm/@tweenjs/tween.js@20.0.0/dist/tween.esm.js": "https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@20.0.0/dist/tween.esm.js"
       }
     }
-    </script>
-
+  </script>
 </head>
 <body>
+  <!-- 3D Canvas automatically created by Three.js -->
 
-<div class="header">
-  <h1>SCUBIK</h1>
-  <div class="buttons" style="display: none">
-    <button id="shuffleButton2">🎲 Keverj</button>
-    <button id="resetButton2">🧹 Elölről</button>
-    <button id="toggleGuideButton">📖 Taníts!</button>
-  </div>
-</div>
-
-
-<div class="input-wrapper" id="inputWrapper">
-  <div class="drag-handle" id="dragHandle"></div>
-  <div><p>Scribe your secret message here</p></div>
-  <div class="accordion-content" id="accordionContent">
-    <div class="input-panel">
-  <div class="face-input" style="background-color: #f44336;" data-face="front">
-    <input type="text" maxlength="1" id="front-0" />
-    <input type="text" maxlength="1" id="front-1" />
-    <input type="text" maxlength="1" id="front-2" />
-    <input type="text" maxlength="1" id="front-3" />
-    <input type="text" maxlength="1" id="front-4" />
-    <input type="text" maxlength="1" id="front-5" />
-    <input type="text" maxlength="1" id="front-6" />
-    <input type="text" maxlength="1" id="front-7" />
-    <input type="text" maxlength="1" id="front-8" />
-  </div>
-  <div class="face-input" style="background-color: #2196f3;" data-face="back">
-    <input type="text" maxlength="1" id="back-0" />
-    <input type="text" maxlength="1" id="back-1" />
-    <input type="text" maxlength="1" id="back-2" />
-    <input type="text" maxlength="1" id="back-3" />
-    <input type="text" maxlength="1" id="back-4" />
-    <input type="text" maxlength="1" id="back-5" />
-    <input type="text" maxlength="1" id="back-6" />
-    <input type="text" maxlength="1" id="back-7" />
-    <input type="text" maxlength="1" id="back-8" />
-  </div>
-  <div class="face-input" style="background-color: #ff9800;" data-face="left">
-    <input type="text" maxlength="1" id="left-0" />
-    <input type="text" maxlength="1" id="left-1" />
-    <input type="text" maxlength="1" id="left-2" />
-    <input type="text" maxlength="1" id="left-3" />
-    <input type="text" maxlength="1" id="left-4" />
-    <input type="text" maxlength="1" id="left-5" />
-    <input type="text" maxlength="1" id="left-6" />
-    <input type="text" maxlength="1" id="left-7" />
-    <input type="text" maxlength="1" id="left-8" />
-  </div>
-  <div class="face-input" style="background-color: #ff6f61;" data-face="right">
-    <input type="text" maxlength="1" id="right-0" />
-    <input type="text" maxlength="1" id="right-1" />
-    <input type="text" maxlength="1" id="right-2" />
-    <input type="text" maxlength="1" id="right-3" />
-    <input type="text" maxlength="1" id="right-4" />
-    <input type="text" maxlength="1" id="right-5" />
-    <input type="text" maxlength="1" id="right-6" />
-    <input type="text" maxlength="1" id="right-7" />
-    <input type="text" maxlength="1" id="right-8" />
-  </div>
-  <div class="face-input" style="background-color: #ffffff;" data-face="top">
-    <input type="text" maxlength="1" id="top-0" />
-    <input type="text" maxlength="1" id="top-1" />
-    <input type="text" maxlength="1" id="top-2" />
-    <input type="text" maxlength="1" id="top-3" />
-    <input type="text" maxlength="1" id="top-4" />
-    <input type="text" maxlength="1" id="top-5" />
-    <input type="text" maxlength="1" id="top-6" />
-    <input type="text" maxlength="1" id="top-7" />
-    <input type="text" maxlength="1" id="top-8" />
-  </div>
-  <div class="face-input" style="background-color: #ffeb3b;" data-face="bottom">
-    <input type="text" maxlength="1" id="bottom-0" />
-    <input type="text" maxlength="1" id="bottom-1" />
-    <input type="text" maxlength="1" id="bottom-2" />
-    <input type="text" maxlength="1" id="bottom-3" />
-    <input type="text" maxlength="1" id="bottom-4" />
-    <input type="text" maxlength="1" id="bottom-5" />
-    <input type="text" maxlength="1" id="bottom-6" />
-    <input type="text" maxlength="1" id="bottom-7" />
-    <input type="text" maxlength="1" id="bottom-8" />
-  </div>
-</div> 
-</div>
-</div>
-
-<div class="buttons button-row">
-  <button id="resetButton"><span class="material-symbols-outlined" style="font-size:48px">delete_forever</span> Reset</button>
-  <button id="applyTextButton"><span class="material-symbols-outlined" style="font-size:48px">script</span> Inscript</button>
-  <button id="shuffleButton"><span class="material-symbols-outlined" style="font-size:48px">ifl</span> Shuffle</button>
-  <button id="generateLinkButton"><span class="material-symbols-outlined" style="font-size:48px">link</span> Share</button>
-</div>
-
-<div style="display:flex;justify-content: center;">
-  <div class="tutorial-panel">
-    <div class="tutorial-buttonL" id="prevStep">◀</div>
-    <div class="tutorial-text" id="tutorialText">
-      <strong>1. lépés</strong>
-      Fehér kereszt kialakítása. Keresd a fehér élkockákat, és igazítsd őket úgy, hogy a fehér közép körül keresztet alkossanak.
+  <div class="header">
+    <h1>SCUBIK</h1>
+    <div class="buttons">
+      <button class="button" id="resetButton">
+        <span class="material-symbols-outlined">restart_alt</span>
+        Reset
+      </button>
+      <button class="button" id="toggleGuideButton" style="display:none">
+        <span class="material-symbols-outlined">help_outline</span>
+        Guide
+      </button>
+      <button class="button" id="shuffleButton">
+        <span class="material-symbols-outlined">shuffle</span>
+        Shuffle
+      </button>
+      <button class="button button-primary" id="generateLinkButton">
+        <span class="material-symbols-outlined">share</span>
+        Share
+      </button>
     </div>
-    <div class="tutorial-buttonR" id="nextStep">▶</div>
   </div>
-</div>
-</div>
+
+  <button class="input-panel-toggle" id="toggleInputPanel">
+    <span class="material-symbols-outlined">text_fields</span>
+    Customize&nbsp;Cube
+  </button>
+
+  <div class="input-wrapper" id="inputWrapper">
+    <div class="input-header">
+      <div class="drag-handle" id="dragHandle"></div>
+      <h2 class="input-title">Scribe your message</h2>
+      <p class="input-subtitle">Enter characters on each face of the cube to create your secret message</p>
+    </div>
+    
+    <div class="accordion-content" id="accordionContent">
+      <div class="input-panel">
+        <div class="face-input" style="background-color: var(--cube-red);" data-face="front" data-face-name="Front">
+          <input type="text" maxlength="1" id="front-0" />
+          <input type="text" maxlength="1" id="front-1" />
+          <input type="text" maxlength="1" id="front-2" />
+          <input type="text" maxlength="1" id="front-3" />
+          <input type="text" maxlength="1" id="front-4" />
+          <input type="text" maxlength="1" id="front-5" />
+          <input type="text" maxlength="1" id="front-6" />
+          <input type="text" maxlength="1" id="front-7" />
+          <input type="text" maxlength="1" id="front-8" />
+        </div>
+        
+        <div class="face-input" style="background-color: var(--cube-blue);" data-face="right" data-face-name="Right">
+          <input type="text" maxlength="1" id="right-0" />
+          <input type="text" maxlength="1" id="right-1" />
+          <input type="text" maxlength="1" id="right-2" />
+          <input type="text" maxlength="1" id="right-3" />
+          <input type="text" maxlength="1" id="right-4" />
+          <input type="text" maxlength="1" id="right-5" />
+          <input type="text" maxlength="1" id="right-6" />
+          <input type="text" maxlength="1" id="right-7" />
+          <input type="text" maxlength="1" id="right-8" />
+        </div>
+        
+        <div class="face-input" style="background-color: var(--cube-orange);" data-face="back" data-face-name="Back">
+          <input type="text" maxlength="1" id="back-0" />
+          <input type="text" maxlength="1" id="back-1" />
+          <input type="text" maxlength="1" id="back-2" />
+          <input type="text" maxlength="1" id="back-3" />
+          <input type="text" maxlength="1" id="back-4" />
+          <input type="text" maxlength="1" id="back-5" />
+          <input type="text" maxlength="1" id="back-6" />
+          <input type="text" maxlength="1" id="back-7" />
+          <input type="text" maxlength="1" id="back-8" />
+        </div>
+        
+        <div class="face-input" style="background-color: var(--cube-coral);" data-face="left" data-face-name="Left">
+          <input type="text" maxlength="1" id="left-0" />
+          <input type="text" maxlength="1" id="left-1" />
+          <input type="text" maxlength="1" id="left-2" />
+          <input type="text" maxlength="1" id="left-3" />
+          <input type="text" maxlength="1" id="left-4" />
+          <input type="text" maxlength="1" id="left-5" />
+          <input type="text" maxlength="1" id="left-6" />
+          <input type="text" maxlength="1" id="left-7" />
+          <input type="text" maxlength="1" id="left-8" />
+        </div>
+        
+        <div class="face-input" style="background-color: var(--cube-white);" data-face="top" data-face-name="Top">
+          <input type="text" maxlength="1" id="top-0" />
+          <input type="text" maxlength="1" id="top-1" />
+          <input type="text" maxlength="1" id="top-2" />
+          <input type="text" maxlength="1" id="top-3" />
+          <input type="text" maxlength="1" id="top-4" />
+          <input type="text" maxlength="1" id="top-5" />
+          <input type="text" maxlength="1" id="top-6" />
+          <input type="text" maxlength="1" id="top-7" />
+          <input type="text" maxlength="1" id="top-8" />
+        </div>
+        
+        <div class="face-input" style="background-color: var(--cube-yellow);" data-face="bottom" data-face-name="Bottom">
+          <input type="text" maxlength="1" id="bottom-0" />
+          <input type="text" maxlength="1" id="bottom-1" />
+          <input type="text" maxlength="1" id="bottom-2" />
+          <input type="text" maxlength="1" id="bottom-3" />
+          <input type="text" maxlength="1" id="bottom-4" />
+          <input type="text" maxlength="1" id="bottom-5" />
+          <input type="text" maxlength="1" id="bottom-6" />
+          <input type="text" maxlength="1" id="bottom-7" />
+          <input type="text" maxlength="1" id="bottom-8" />
+        </div>
+      </div>
+    </div>
+    
+    <div class="action-buttons">
+      <button class="action-button" id="resetTextButton">
+        <span class="material-symbols-outlined">clear_all</span>
+        Clear Text
+      </button>
+      <button class="action-button action-button-primary" id="applyTextButton">
+        <span class="material-symbols-outlined">done_all</span>
+        Apply to Cube
+      </button>
+    </div>
+  </div>
+
+  <div class="tutorial-panel" id="tutorialPanel" style="display: none;">
+    <div class="tutorial-header">
+      <div class="tutorial-title">Cube Solving Guide</div>
+      <button class="tutorial-button" id="closeTutorial">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="tutorial-content">
+      <div>
+        <div class="tutorial-step">Step <span id="tutorialStepNumber">1</span>/7</div>
+        <div class="tutorial-desc" id="tutorialText">
+          Create the white cross. Find the white edge pieces and position them correctly around the white center piece.
+        </div>
+      </div>
+    </div>
+    <div class="tutorial-nav">
+      <button class="tutorial-button" id="prevStep">
+        <span class="material-symbols-outlined">arrow_back</span>
+        Previous
+      </button>
+      <button class="tutorial-button" id="nextStep">
+        Next
+        <span class="material-symbols-outlined">arrow_forward</span>
+      </button>
+    </div>
+  </div>
+
 
 <script type="module">
   import * as THREE from 'three';
@@ -735,10 +849,11 @@
         bottom: "CURIOUS??"
       });
     }
-	if (window.location.search.includes('c=')) {
-    const inputWrapper = document.getElementById('inputWrapper');
-    inputWrapper.style.height = '300px';
-    currentHeight = 100;
+    if (window.location.search.includes('c=')) {
+      const inputWrapper = document.getElementById('inputWrapper');
+      inputWrapper.classList.remove('open');
+      inputWrapper.style.height = '300px';
+      currentHeight = 300;
     }
     });
   });
@@ -1342,7 +1457,7 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
   let currentHeight = 100;
   let isDragging2 = false;
   
-  const minHeight = 300;     // csak gombok
+  const minHeight = 0;     // csak gombok
   const midHeight = 800;     // félig
   const maxHeight = 1300; // teljesen nyitva
   
@@ -1372,6 +1487,15 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
     const nearest = [minHeight, midHeight, maxHeight][distances.indexOf(Math.min(...distances))];
     inputWrapper.style.height = `${nearest}px`;
     currentHeight = nearest;
+    if (nearest === minHeight) {
+      inputWrapper.classList.remove('open');
+    
+      // várj az animáció végéig, aztán rejtsd el
+      setTimeout(() => {
+        inputWrapper.style.display = 'none';
+        toggleBtn.style.display = 'flex'; // gomb visszajön
+      }, 850); // picit több mint a CSS animáció időtartama
+    }
   });
   
   // Touch support
@@ -1398,9 +1522,27 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
     const nearest = [minHeight, midHeight, maxHeight][distances.indexOf(Math.min(...distances))];
     inputWrapper.style.height = `${nearest}px`;
     currentHeight = nearest;
+    if (nearest === minHeight) {
+      inputWrapper.classList.remove('open');
+    
+      // várj az animáció végéig, aztán rejtsd el
+      setTimeout(() => {
+        inputWrapper.style.display = 'none';
+        toggleBtn.style.display = 'flex'; // gomb visszajön
+      }, 850); // picit több mint a CSS animáció időtartama
+    }
   });
   
+  const toggleBtn = document.getElementById('toggleInputPanel');
   
+  toggleBtn.addEventListener('click', () => {
+    inputWrapper.style.display = 'flex';
+    inputWrapper.classList.add('open');
+    inputWrapper.style.height = `${midHeight}px`;
+    currentHeight = midHeight;
+  
+    toggleBtn.style.display = 'none'; // gomb eltűnik ha megnyitjuk a panelt
+  });
 
   
   
