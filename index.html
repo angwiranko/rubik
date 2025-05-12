@@ -1135,6 +1135,7 @@
   let moveHistory = [];
   
   function onPointerDown(x, y) {
+    if (isShuffling) return;
     mouse.x = (x / window.innerWidth) * 2 - 1;
     mouse.y = -(y / window.innerHeight) * 2 + 1;
   
@@ -1165,6 +1166,11 @@
   }
   
     function onPointerUp(x, y) {
+    if (isShuffling) {
+      controls.enabled = true;
+      return;
+    }
+    
     if (!isDragging || !selectedCube || !selectedFaceNormal) {
       controls.enabled = true;
       return;
@@ -1337,6 +1343,9 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
   updateTutorial();
   document.querySelector('.tutorial-panel').style.display = 'none';
 
+
+  let isShuffling = false;
+  
   
   document.getElementById('shuffleButton').addEventListener('click', () => {
     shuffleCube(20);
@@ -1347,19 +1356,26 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
   });
   
   async function shuffleCube(moves = 20) {
+    if (isShuffling) return; // ha már fut, ne induljon újra
+  
+    isShuffling = true;
+  
     const axes = ['x', 'y', 'z'];
     const layers = [-offset, 0, offset];
   
     for (let i = 0; i < moves; i++) {
       const axis = axes[Math.floor(Math.random() * axes.length)];
-      const layerValue = [-1.04, 0, 1.04][Math.floor(Math.random() * 3)];
-      const layerFilter = cube => Math.abs(cube.position[axis] - layerValue) < 0.2;
+      const layerValue = layers[Math.floor(Math.random() * layers.length)];
       const direction = Math.random() > 0.5 ? 1 : -1;
   
+      const layerFilter = cube => Math.abs(cube.position[axis] - layerValue) < 0.2;
+  
       await rotateLayer(layerFilter, axis, direction, layerValue);
-      await new Promise(res => setTimeout(res, 100)); // Kis szünet, hogy szebb legyen
+      await new Promise(res => setTimeout(res, 100)); // szünet a vizuális élményhez
     }
-	updateLogicalPositions();
+  
+    updateLogicalPositions();
+    isShuffling = false;
   }
 
   function resetCube() {
@@ -1439,11 +1455,32 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
     });
   });
   
+  function updateCubeFromInputs() {
+    const getVal = id => {
+      const face = id.replace('face-', '');
+      let result = '';
+      for (let i = 0; i < 9; i++) {
+        const cell = document.getElementById(`${face}-${i}`);
+        result += cell && cell.value ? cell.value : ' ';
+      }
+      return result.padEnd(9).slice(0, 9);
+    };
+  
+    applyFaceLetters({
+      front:  getVal('face-front'),
+      back:   getVal('face-back'),
+      left:   getVal('face-left'),
+      right:  getVal('face-right'),
+      top:    getVal('face-top'),
+      bottom: getVal('face-bottom')
+    });
+  }
+  
   document.querySelectorAll('.face-input').forEach((group, groupIndex, allGroups) => {
     const inputs = group.querySelectorAll('input');
     inputs.forEach((input, idx) => {
       // beíráskor előre ugrik
-      input.addEventListener('input', e => {
+        input.addEventListener('input', e => {
         if (e.inputType !== 'deleteContentBackward' && input.value.length === 1) {
           if (idx < 8) {
             inputs[idx + 1].focus();
@@ -1455,7 +1492,10 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
             }
           }
         }
-      });
+        // 🔄 valós idejű frissítés a kockán
+        updateCubeFromInputs();
+    });
+      
   
       // backspace: ha üres mező → visszaugrik
       input.addEventListener('keydown', e => {
@@ -1472,6 +1512,8 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
             }
           }
         }
+        // 🔄 valós idejű frissítés a kockán
+        updateCubeFromInputs();
       });
     });
   });
