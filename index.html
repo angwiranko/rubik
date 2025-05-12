@@ -11,8 +11,8 @@
   <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
   <style>
     :root {
-      --primary: #ff4081;
-      --primary-dark: #c60055;
+      --primary: rgb(176, 135, 73);
+      --primary-dark: #caa36c;
       --primary-light: #ff79b0;
       --secondary: #303F9F;
       --text-light: #ffffff;
@@ -188,6 +188,7 @@
       align-items: center;
       border-bottom: 1px solid var(--surface-light);
       margin-bottom: 20px;
+      cursor: grab;
     }
     
     .drag-handle {
@@ -269,8 +270,8 @@
       border-radius: var(--radius-sm);
       outline: none;
       caret-color: white;
-      color: var(--text-dark);
-      background-color: rgba(255,255,255,0.9);
+      color: var(--text-light);
+      background-color: rgba(0,0,0,0.5);
       transition: var(--transition);
       font-family: 'Rubik', sans-serif;
     }
@@ -303,7 +304,7 @@
       cursor: pointer;
       transition: var(--transition);
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
       justify-content: center;
       gap: 8px;
@@ -503,7 +504,7 @@
     <div class="input-header">
       <div class="drag-handle" id="dragHandle"></div>
       <h2 class="input-title">Scribe your message</h2>
-      <p class="input-subtitle">Enter characters on each face of the cube to create your secret message</p>
+      <p class="input-subtitle">Enter characters on each face of the cube<br>to create your own secret message</p>
     </div>
     
     <div class="accordion-content" id="accordionContent">
@@ -841,19 +842,19 @@
     initFromUrl().then(() => {
     if (!window.location.search.includes("c=")) {
       applyFaceLetters({
-        front:  "SEND_YOUR",
-        back:   "AAAAAAAAA",
-        left:   "AAAAAAAAA",
-        right:  "MESSAGES_",
-        top:    "___SECRET",
+        front:  "   SEC   ",
+        back:   "         ",
+        left:   "         ",
+        right:  "   RET   ",
+        top:    " ? ? ? ? ",
         bottom: "CURIOUS??"
       });
     }
     if (window.location.search.includes('c=')) {
       const inputWrapper = document.getElementById('inputWrapper');
       inputWrapper.classList.remove('open');
-      inputWrapper.style.height = '300px';
-      currentHeight = 300;
+      inputWrapper.style.height = '0vh';
+      currentHeight = 0;
     }
     });
   });
@@ -1374,19 +1375,19 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
   
   document.getElementById('applyTextButton').addEventListener('click', () => {
     const getVal = id => {
-  // ha a régi mező létezik (pl. face-front), használd azt
-  //const el = document.getElementById(id);
-  //if (el) return el.value.padEnd(9).slice(0, 9);
-
-  // ha nem, akkor próbáld összefűzni a 3×3 inputokból (pl. front-0...front-8)
-  const face = id.replace('face-', '');
-  let result = '';
-  for (let i = 0; i < 9; i++) {
-    const cell = document.getElementById(`${face}-${i}`);
-    result += cell && cell.value ? cell.value : ' ';
-  }
-  return result.padEnd(9).slice(0, 9);
-};
+      // ha a régi mező létezik (pl. face-front), használd azt
+      //const el = document.getElementById(id);
+      //if (el) return el.value.padEnd(9).slice(0, 9);
+    
+      // ha nem, akkor próbáld összefűzni a 3×3 inputokból (pl. front-0...front-8)
+      const face = id.replace('face-', '');
+      let result = '';
+      for (let i = 0; i < 9; i++) {
+        const cell = document.getElementById(`${face}-${i}`);
+        result += cell && cell.value ? cell.value : ' ';
+      }
+      return result.padEnd(9).slice(0, 9);
+    };
     applyFaceLetters({
       front:  getVal('face-front'),
       back:   getVal('face-back'),
@@ -1395,23 +1396,27 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
       top:    getVal('face-top'),
       bottom: getVal('face-bottom')
     });
+    inputWrapper.classList.remove('open');
+      inputWrapper.style.height = `${minHeight}vh`;
+      currentHeight = minHeight;
+    
+      setTimeout(() => {
+        inputWrapper.style.display = 'none';
+        toggleBtn.style.display = 'flex';
+      }, 450);
   });
   
   document.getElementById('generateLinkButton').addEventListener('click', () => {
     const getVal = id => {
-  // ha a régi mező létezik (pl. face-front), használd azt
-  //const el = document.getElementById(id);
-  //if (el) return el.value.padEnd(9).slice(0, 9);
-
-  // ha nem, akkor próbáld összefűzni a 3×3 inputokból (pl. front-0...front-8)
-  const face = id.replace('face-', '');
-  let result = '';
-  for (let i = 0; i < 9; i++) {
-    const cell = document.getElementById(`${face}-${i}`);
-    result += cell && cell.value ? cell.value : ' ';
-  }
-  return result.padEnd(9).slice(0, 9);
-};
+      const face = id.replace('face-', '');
+      let result = '';
+      for (let i = 0; i < 9; i++) {
+        const cell = document.getElementById(`${face}-${i}`);
+        result += cell && cell.value ? cell.value : ' ';
+      }
+      return result.padEnd(9).slice(0, 9);
+    };
+  
     const cubeState = {
       front: getVal('face-front'),
       back: getVal('face-back'),
@@ -1421,26 +1426,49 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
       bottom: getVal('face-bottom'),
       moves: moveHistory
     };
+  
     const json = JSON.stringify(cubeState);
     const compressed = LZString.compressToEncodedURIComponent(json);
     const shareUrl = `${location.origin}${location.pathname}?c=${compressed}`;
-    prompt("Copy this link:", shareUrl);
-	console.log("Mentett moveHistory:", moveHistory);
+  
+    // ✅ Másolás vágólapra
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      showToast("🔗 Link copied to clipboard!");
+    }).catch(() => {
+      alert("Failed to copy link 😞");
+    });
   });
   
   document.querySelectorAll('.face-input').forEach((group, groupIndex, allGroups) => {
     const inputs = group.querySelectorAll('input');
     inputs.forEach((input, idx) => {
+      // beíráskor előre ugrik
       input.addEventListener('input', e => {
         if (e.inputType !== 'deleteContentBackward' && input.value.length === 1) {
           if (idx < 8) {
             inputs[idx + 1].focus();
           } else {
-            // Ugrás a következő csoport első mezőjére
             const nextGroup = allGroups[groupIndex + 1];
             if (nextGroup) {
               const nextInput = nextGroup.querySelector('input');
               if (nextInput) nextInput.focus();
+            }
+          }
+        }
+      });
+  
+      // backspace: ha üres mező → visszaugrik
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Backspace' && input.value === '') {
+          if (idx > 0) {
+            inputs[idx - 1].focus();
+          } else if (groupIndex > 0) {
+            const prevGroup = allGroups[groupIndex - 1];
+            if (prevGroup) {
+              const prevInputs = prevGroup.querySelectorAll('input');
+              if (prevInputs.length > 0) {
+                prevInputs[prevInputs.length - 1].focus();
+              }
             }
           }
         }
@@ -1450,7 +1478,7 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
   
   
   const inputWrapper = document.getElementById('inputWrapper');
-  const dragHandle = document.getElementById('dragHandle');
+  const dragHandle = document.querySelector('.input-header');
 
   let startY = 0;
   let startHeight = 0;
@@ -1458,8 +1486,8 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
   let isDragging2 = false;
   
   const minHeight = 0;     // csak gombok
-  const midHeight = 800;     // félig
-  const maxHeight = 1300; // teljesen nyitva
+  const midHeight = 40;     // félig
+  const maxHeight = 80; // teljesen nyitva
   
   dragHandle.addEventListener('mousedown', (e) => {
     isDragging2 = true;
@@ -1473,7 +1501,7 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
     const delta = startY - e.clientY;
     let newHeight = startHeight + delta;
     newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
-    inputWrapper.style.height = `${newHeight}px`;
+    inputWrapper.style.height = `${newHeight}vh`;
     currentHeight = newHeight;
   });
   
@@ -1485,7 +1513,7 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
     // snap to nearest state
     const distances = [minHeight, midHeight, maxHeight].map(h => Math.abs(currentHeight - h));
     const nearest = [minHeight, midHeight, maxHeight][distances.indexOf(Math.min(...distances))];
-    inputWrapper.style.height = `${nearest}px`;
+    inputWrapper.style.height = `${nearest}vh`;
     currentHeight = nearest;
     if (nearest === minHeight) {
       inputWrapper.classList.remove('open');
@@ -1494,7 +1522,7 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
       setTimeout(() => {
         inputWrapper.style.display = 'none';
         toggleBtn.style.display = 'flex'; // gomb visszajön
-      }, 850); // picit több mint a CSS animáció időtartama
+      }, 450); // picit több mint a CSS animáció időtartama
     }
   });
   
@@ -1510,7 +1538,7 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
     const delta = startY - e.touches[0].clientY;
     let newHeight = startHeight + delta;
     newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
-    inputWrapper.style.height = `${newHeight}px`;
+    inputWrapper.style.height = `${newHeight}vh`;
     currentHeight = newHeight;
   }, { passive: false });
   
@@ -1520,7 +1548,7 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
   
     const distances = [minHeight, midHeight, maxHeight].map(h => Math.abs(currentHeight - h));
     const nearest = [minHeight, midHeight, maxHeight][distances.indexOf(Math.min(...distances))];
-    inputWrapper.style.height = `${nearest}px`;
+    inputWrapper.style.height = `${nearest}vh`;
     currentHeight = nearest;
     if (nearest === minHeight) {
       inputWrapper.classList.remove('open');
@@ -1529,7 +1557,7 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
       setTimeout(() => {
         inputWrapper.style.display = 'none';
         toggleBtn.style.display = 'flex'; // gomb visszajön
-      }, 850); // picit több mint a CSS animáció időtartama
+      }, 450); // picit több mint a CSS animáció időtartama
     }
   });
   
@@ -1537,13 +1565,60 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
   
   toggleBtn.addEventListener('click', () => {
     inputWrapper.style.display = 'flex';
-    inputWrapper.classList.add('open');
-    inputWrapper.style.height = `${midHeight}px`;
-    currentHeight = midHeight;
+  
+    // várunk egy kis időt, hogy a DOM frissüljön → aztán induljon az animáció
+    setTimeout(() => {
+      inputWrapper.classList.add('open');
+      inputWrapper.style.height = `${midHeight}vh`;
+      currentHeight = midHeight;
+    }, 20); // már 10–20ms is elég lehet
   
     toggleBtn.style.display = 'none'; // gomb eltűnik ha megnyitjuk a panelt
   });
+  
+  document.getElementById('resetTextButton').addEventListener('click', () => {
+    document.querySelectorAll('.face-input input').forEach(input => {
+      input.value = '';
+    });
+  
+    applyFaceLetters({
+      front: "         ",
+      back: "         ",
+      left: "         ",
+      right: "         ",
+      top: "         ",
+      bottom: "         "
+    });
+  });
 
+  
+  function showToast(message) {
+    const toast = document.createElement('div');
+    toast.textContent = message;
+    toast.style.position = 'fixed';
+    toast.style.bottom = '50vh';
+    toast.style.left = '50%';
+    toast.style.transform = 'translateX(-50%)';
+    toast.style.background = '#333';
+    toast.style.color = 'white';
+    toast.style.textAlign = 'center';
+    toast.style.padding = '10px 20px';
+    toast.style.borderRadius = '8px';
+    toast.style.boxShadow = '0 4px 10px rgba(0,0,0,0.3)';
+    toast.style.zIndex = '10000';
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity 0.3s ease';
+  
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => {
+      toast.style.opacity = '1';
+    });
+  
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      setTimeout(() => document.body.removeChild(toast), 500);
+    }, 2000);
+  }
   
   
   window.addEventListener('resize', () => {
