@@ -510,9 +510,9 @@
     <div class="accordion-content" id="accordionContent">
       <div class="input-panel">
         <div class="face-input" style="background-color: var(--cube-red);" data-face="front" data-face-name="Front">
-          <input type="text" maxlength="1" id="front-0" />
-          <input type="text" maxlength="1" id="front-1" />
-          <input type="text" maxlength="1" id="front-2" />
+          <input type="text" id="front-0" />
+          <input type="text" id="front-1" />
+          <input type="text" id="front-2" />
           <input type="text" maxlength="1" id="front-3" />
           <input type="text" maxlength="1" id="front-4" />
           <input type="text" maxlength="1" id="front-5" />
@@ -773,9 +773,38 @@
         const faceChar = faceCharMap[idx][charIndex];
         if (!faceChar || faceChar === " ") return;
   
-        const textGeo = new TextGeometry(faceChar, textOptions);
-        const textMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
-        const textMesh = new THREE.Mesh(textGeo, textMat);
+        //const textGeo = new TextGeometry(faceChar, textOptions);
+        //const textMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+		
+        let textMesh;
+
+        if (faceChar.length > 1 || faceChar.codePointAt(0) > 0xffff) {
+          // Emoji → canvas + texture
+          const canvas = document.createElement('canvas');
+          canvas.width = 128;
+          canvas.height = 128;
+          const ctx = canvas.getContext('2d');
+          ctx.fillStyle = 'white';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.font = '90px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif';
+          ctx.fillText(faceChar, 64, 64);
+		  
+		  console.log('Drawing emoji:', faceChar);
+        
+          const texture = new THREE.CanvasTexture(canvas);
+          const mat = new THREE.SpriteMaterial({ map: texture, transparent: true });
+          textMesh = new THREE.Sprite(mat);
+          textMesh.scale.set(0.6, 0.6, 1);
+        } else {
+            const textGeo = new TextGeometry(faceChar, textOptions);
+            const textMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+            const textMeshLocal = new THREE.Mesh(textGeo, textMat);
+            textGeo.computeBoundingBox();
+            const center = textGeo.boundingBox.getCenter(new THREE.Vector3());
+            textMeshLocal.position.set(0, 0, 0).sub(center);
+            textMesh = textMeshLocal;
+          }
   
         const sideNormal = dir;
         //const worldPos = new THREE.Vector3(0, 0, 0).add(sideNormal.clone().multiplyScalar(size / 2 + 0.00));
@@ -784,12 +813,6 @@
         //const centerOffset = new THREE.Vector3(-textSize.x / 2, -textSize.y / 2, -textSize.z / 2);
         //textMesh.position.copy(worldPos.clone().add(centerOffset));
         //textMesh.position.addScaledVector(sideNormal, 0);
-
-        textGeo.computeBoundingBox();
-        const center = textGeo.boundingBox.getCenter(new THREE.Vector3());
-        
-        // ⬇️ Betű közepének eltolása az origóra
-        textMesh.position.set(0, 0, 0).sub(center);
 
 
         // Új pozíció és forgatás beállítás oldalanként
@@ -1481,6 +1504,11 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
     inputs.forEach((input, idx) => {
       // beíráskor előre ugrik
         input.addEventListener('input', e => {
+		const val = input.value;
+		  const graphemes = [...val];
+          if (graphemes.length > 1) {
+            input.value = graphemes[0];
+          }
         if (e.inputType !== 'deleteContentBackward' && input.value.length === 1) {
           if (idx < 8) {
             inputs[idx + 1].focus();
