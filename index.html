@@ -11,9 +11,12 @@
   <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
   <style>
     :root {
-      --primary: rgb(176, 135, 73);
-      --primary-dark: #caa36c;
-      --primary-light: #ff79b0;
+      --primary: #008066;         /* sötét türkiz */
+--primary-dark: #005a47;    /* még sötétebb verzió */
+--primary-light: #00b894;   /* csak finom kiemeléshez */
+
+--accent: #ff2e88;          /* neon pink */
+--accent-dark: #b8005a;     /* mély fukszia */
       --secondary: #303F9F;
       --text-light: #ffffff;
       --text-dark: #212121;
@@ -117,8 +120,9 @@
     }
 
     .button-primary {
-      background-color: var(--primary);
+      background: linear-gradient(135deg, var(--primary), var(--accent));
       color: white;
+	  backdrop-filter: blur(8px);
     }
 
     .button-primary:hover {
@@ -137,7 +141,7 @@
       left: 50%;
       transform: translateX(-50%);
       z-index: 100;
-      background-color: var(--primary);
+      background: linear-gradient(135deg, var(--primary), var(--accent));
       color: white;
       border: none;
       border-radius: 30px;
@@ -311,7 +315,7 @@
     }
 
     .action-button-primary {
-      background-color: var(--primary);
+      background: linear-gradient(135deg, var(--primary), var(--accent));
     }
     
     .action-button:hover {
@@ -469,6 +473,7 @@
       }
     }
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js"></script>
 </head>
 <body>
   <!-- 3D Canvas automatically created by Three.js -->
@@ -513,72 +518,72 @@
           <input type="text" id="front-0" />
           <input type="text" id="front-1" />
           <input type="text" id="front-2" />
-          <input type="text" maxlength="1" id="front-3" />
-          <input type="text" maxlength="1" id="front-4" />
-          <input type="text" maxlength="1" id="front-5" />
-          <input type="text" maxlength="1" id="front-6" />
-          <input type="text" maxlength="1" id="front-7" />
-          <input type="text" maxlength="1" id="front-8" />
+          <input type="text" id="front-3" />
+          <input type="text" id="front-4" />
+          <input type="text" id="front-5" />
+          <input type="text" id="front-6" />
+          <input type="text" id="front-7" />
+          <input type="text" id="front-8" />
         </div>
         
         <div class="face-input" style="background-color: var(--cube-blue);" data-face="right" data-face-name="Right">
-          <input type="text" maxlength="1" id="right-0" />
-          <input type="text" maxlength="1" id="right-1" />
-          <input type="text" maxlength="1" id="right-2" />
-          <input type="text" maxlength="1" id="right-3" />
-          <input type="text" maxlength="1" id="right-4" />
-          <input type="text" maxlength="1" id="right-5" />
-          <input type="text" maxlength="1" id="right-6" />
-          <input type="text" maxlength="1" id="right-7" />
-          <input type="text" maxlength="1" id="right-8" />
+          <input type="text" id="right-0" />
+          <input type="text" id="right-1" />
+          <input type="text" id="right-2" />
+          <input type="text" id="right-3" />
+          <input type="text" id="right-4" />
+          <input type="text" id="right-5" />
+          <input type="text" id="right-6" />
+          <input type="text" id="right-7" />
+          <input type="text" id="right-8" />
         </div>
         
         <div class="face-input" style="background-color: var(--cube-orange);" data-face="back" data-face-name="Back">
-          <input type="text" maxlength="1" id="back-0" />
-          <input type="text" maxlength="1" id="back-1" />
-          <input type="text" maxlength="1" id="back-2" />
-          <input type="text" maxlength="1" id="back-3" />
-          <input type="text" maxlength="1" id="back-4" />
-          <input type="text" maxlength="1" id="back-5" />
-          <input type="text" maxlength="1" id="back-6" />
-          <input type="text" maxlength="1" id="back-7" />
-          <input type="text" maxlength="1" id="back-8" />
+          <input type="text" id="back-0" />
+          <input type="text" id="back-1" />
+          <input type="text" id="back-2" />
+          <input type="text" id="back-3" />
+          <input type="text" id="back-4" />
+          <input type="text" id="back-5" />
+          <input type="text" id="back-6" />
+          <input type="text" id="back-7" />
+          <input type="text" id="back-8" />
         </div>
         
         <div class="face-input" style="background-color: var(--cube-coral);" data-face="left" data-face-name="Left">
-          <input type="text" maxlength="1" id="left-0" />
-          <input type="text" maxlength="1" id="left-1" />
-          <input type="text" maxlength="1" id="left-2" />
-          <input type="text" maxlength="1" id="left-3" />
-          <input type="text" maxlength="1" id="left-4" />
-          <input type="text" maxlength="1" id="left-5" />
-          <input type="text" maxlength="1" id="left-6" />
-          <input type="text" maxlength="1" id="left-7" />
-          <input type="text" maxlength="1" id="left-8" />
+          <input type="text" id="left-0" />
+          <input type="text" id="left-1" />
+          <input type="text" id="left-2" />
+          <input type="text" id="left-3" />
+          <input type="text" id="left-4" />
+          <input type="text" id="left-5" />
+          <input type="text" id="left-6" />
+          <input type="text" id="left-7" />
+          <input type="text" id="left-8" />
         </div>
         
         <div class="face-input" style="background-color: var(--cube-white);" data-face="top" data-face-name="Top">
-          <input type="text" maxlength="1" id="top-0" />
-          <input type="text" maxlength="1" id="top-1" />
-          <input type="text" maxlength="1" id="top-2" />
-          <input type="text" maxlength="1" id="top-3" />
-          <input type="text" maxlength="1" id="top-4" />
-          <input type="text" maxlength="1" id="top-5" />
-          <input type="text" maxlength="1" id="top-6" />
-          <input type="text" maxlength="1" id="top-7" />
-          <input type="text" maxlength="1" id="top-8" />
+          <input type="text" id="top-0" />
+          <input type="text" id="top-1" />
+          <input type="text" id="top-2" />
+          <input type="text" id="top-3" />
+          <input type="text" id="top-4" />
+          <input type="text" id="top-5" />
+          <input type="text" id="top-6" />
+          <input type="text" id="top-7" />
+          <input type="text" id="top-8" />
         </div>
         
         <div class="face-input" style="background-color: var(--cube-yellow);" data-face="bottom" data-face-name="Bottom">
-          <input type="text" maxlength="1" id="bottom-0" />
-          <input type="text" maxlength="1" id="bottom-1" />
-          <input type="text" maxlength="1" id="bottom-2" />
-          <input type="text" maxlength="1" id="bottom-3" />
-          <input type="text" maxlength="1" id="bottom-4" />
-          <input type="text" maxlength="1" id="bottom-5" />
-          <input type="text" maxlength="1" id="bottom-6" />
-          <input type="text" maxlength="1" id="bottom-7" />
-          <input type="text" maxlength="1" id="bottom-8" />
+          <input type="text" id="bottom-0" />
+          <input type="text" id="bottom-1" />
+          <input type="text" id="bottom-2" />
+          <input type="text" id="bottom-3" />
+          <input type="text" id="bottom-4" />
+          <input type="text" id="bottom-5" />
+          <input type="text" id="bottom-6" />
+          <input type="text" id="bottom-7" />
+          <input type="text" id="bottom-8" />
         </div>
       </div>
     </div>
@@ -632,6 +637,7 @@
   import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
   import TWEEN from 'npm/@tweenjs/tween.js@20.0.0/dist/tween.esm.js';
 
+  let suppressInputUpdates = false;
   let loadedFont = null;
   const fontLoader = new FontLoader();
 
@@ -721,35 +727,45 @@
       }
     }
   }
+  
+    function emojiToTwemojiUrl(emoji) {
+      const code = twemoji.convert.toCodePoint(emoji);
+      return `https://cdn.jsdelivr.net/npm/twemoji@14.0.2/72x72/${code}.png`;
+    }
+    
+
+  function isEmoji(char) {
+    if (typeof char !== 'string') return false;
+    const code = char.codePointAt(0);
+    return (
+      (code >= 0x1F600 && code <= 0x1F64F) ||  // emoticons
+      (code >= 0x1F300 && code <= 0x1F5FF) ||  // symbols & pictographs
+      (code >= 0x1F680 && code <= 0x1F6FF) ||  // transport
+      (code >= 0x2600 && code <= 0x26FF) ||    // misc symbols
+      (code >= 0x2700 && code <= 0x27BF) ||    // dingbats
+      (code >= 0x1F900 && code <= 0x1F9FF) ||  // supplemental
+      (code >= 0x1FA70 && code <= 0x1FAFF)     // extended
+    );
+  }
 
   function applyFaceLetters(faceData = {}) {
-    if (!loadedFont) return;
-
-      // 🔥 Korábbi betűk törlése
-      cubes.forEach(cube => {
-        const toRemove = cube.children.filter(child => child.type === "Group");
-        toRemove.forEach(child => cube.remove(child));
-      });
-
-
-    const sideKeys = ["right", "left", "top", "bottom", "front", "back"];
-    const faceCharMap = sideKeys.map(k => (faceData[k] || " ".repeat(9)).padEnd(9).slice(0, 9).split(""));
+	// 🔥 Töröljük a korábbi karaktereket
+    console.log("[applyFaceLetters] Hívva. Front=", faceData.front);
+	cubes.forEach(cube => {
+      const toRemove = cube.children.filter(child =>
+        child.type === "Group" && !child.userData.persistent
+      );
+      toRemove.forEach(child => cube.remove(child));
+    });
   
-    const textOptions = {
-      font: loadedFont,
-      size: 0.3,
-      height: 0,
-      curveSegments: 12,
-      bevelEnabled: true,
-      bevelThickness: 0.01,
-      bevelSize: 0.01,
-      bevelOffset: 0,
-      bevelSegments: 1
-    };
+    const sideKeys = ["right", "left", "top", "bottom", "front", "back"];
+    const faceCharMap = sideKeys.map(k => {
+      const graphemes = Array.from((faceData[k] || "").normalize('NFC'));
+      return [...graphemes, ...Array(9 - graphemes.length).fill(' ')].slice(0, 9);
+    });
   
     cubes.forEach(cube => {
       const { x: gridX, y: gridY, z: gridZ } = cube.userData.originalPosition;
-
   
       faceOffsets.forEach(({ dir, idx }) => {
         const threshold = 0.2;
@@ -771,117 +787,131 @@
         if (row < 0 || row > 2 || col < 0 || col > 2) return;
         const charIndex = row * 3 + col;
         const faceChar = faceCharMap[idx][charIndex];
+		//console.log(`[DEBUG] charIndex=${charIndex}, raw=`, faceChar, 'codePoint=', typeof faceChar === 'string' ? faceChar.codePointAt(0) : 'n/a');
+
         if (!faceChar || faceChar === " ") return;
   
-        //const textGeo = new TextGeometry(faceChar, textOptions);
-        //const textMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
-		
-        let textMesh;
+        // 🖼️ Minden karaktert canvas textúraként rajzolunk meg
 
-        if (faceChar.length > 1 || faceChar.codePointAt(0) > 0xffff) {
-          // Emoji → canvas + texture
-          const canvas = document.createElement('canvas');
-          canvas.width = 128;
-          canvas.height = 128;
+      if (isEmoji(faceChar)) {
+        const canvas = document.createElement('canvas');
+          canvas.width = 256;
+          canvas.height = 256;
           const ctx = canvas.getContext('2d');
-          ctx.fillStyle = 'white';
+          ctx.fillStyle = 'black';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          ctx.font = '90px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif';
-          ctx.fillText(faceChar, 64, 64);
+          ctx.font = '200px "Segoe UI Emoji", "Noto Color Emoji", "Apple Color Emoji", sans-serif';
+          ctx.fillText(faceChar, 128, 128);
 		  
-		  console.log('Drawing emoji:', faceChar);
-        
+		            
           const texture = new THREE.CanvasTexture(canvas);
-          const mat = new THREE.SpriteMaterial({ map: texture, transparent: true });
-          textMesh = new THREE.Sprite(mat);
-          textMesh.scale.set(0.6, 0.6, 1);
-        } else {
-            const textGeo = new TextGeometry(faceChar, textOptions);
-            const textMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
-            const textMeshLocal = new THREE.Mesh(textGeo, textMat);
-            textGeo.computeBoundingBox();
-            const center = textGeo.boundingBox.getCenter(new THREE.Vector3());
-            textMeshLocal.position.set(0, 0, 0).sub(center);
-            textMesh = textMeshLocal;
+		  texture.needsUpdate = true;
+          const mat = new THREE.MeshBasicMaterial({
+            map: texture,
+            transparent: true,
+            polygonOffset: true,
+            polygonOffsetFactor: -1,
+            polygonOffsetUnits: -1
+          });
+          
+          const plane = new THREE.Mesh(new THREE.PlaneGeometry(0.8, 0.8), mat);
+      
+          // pozícionálás mint eddig
+          switch (idx) {
+            case 0: plane.rotation.set(0, Math.PI / 2, 0); plane.position.set(0.5, -0.05, 0); break;
+            case 1: plane.rotation.set(0, -Math.PI / 2, 0); plane.position.set(-0.5, -0.05, 0); break;
+            case 2: plane.rotation.set(-Math.PI / 2, 0, 0); plane.position.set(0, 0.5, 0.05); break;
+            case 3: plane.rotation.set(Math.PI / 2, 0, 0); plane.position.set(0, -0.5, -0.05); break; 
+            case 4: plane.rotation.set(0, 0, 0); plane.position.set(0, -0.05, 0.5); break;
+            case 5: plane.rotation.set(0, Math.PI, 0); plane.position.set(0, -0.05, -0.5); break;
           }
-  
-        const sideNormal = dir;
-        //const worldPos = new THREE.Vector3(0, 0, 0).add(sideNormal.clone().multiplyScalar(size / 2 + 0.00));
-        //textGeo.computeBoundingBox();
-        //const textSize = textGeo.boundingBox.getSize(new THREE.Vector3());
-        //const centerOffset = new THREE.Vector3(-textSize.x / 2, -textSize.y / 2, -textSize.z / 2);
-        //textMesh.position.copy(worldPos.clone().add(centerOffset));
-        //textMesh.position.addScaledVector(sideNormal, 0);
+          
+		  console.log(`[applyFaceLetters] cube=(${gridX},${gridY},${gridZ}) face=${idx} → char='${faceChar}'`);
+          
+		  const pivot = new THREE.Group();
+          pivot.add(plane);
+          pivot.position.copy(dir.clone().multiplyScalar(0));
+		  
+		  console.log("[applyFaceLetters] Mesh hozzáadva cube-hoz.");
 
-
-        // Új pozíció és forgatás beállítás oldalanként
+          cube.add(pivot);
+        } else {
+          const canvas = document.createElement('canvas');
+          canvas.width = 256;
+          canvas.height = 256;
+          const ctx = canvas.getContext('2d');
+          ctx.fillStyle = 'black';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.font = '200px "Rubik", sans-serif';
+          ctx.fillText(faceChar, 128, 128);
+		  
+          const texture = new THREE.CanvasTexture(canvas);
+		  texture.needsUpdate = true;
+          const mat = new THREE.MeshBasicMaterial({
+            map: texture,
+            transparent: true,
+            polygonOffset: true,
+            polygonOffsetFactor: -1,
+            polygonOffsetUnits: -1
+        });
+      
+        const plane = new THREE.Mesh(new THREE.PlaneGeometry(0.8, 0.8), mat);
+        // ugyanez a switch + pivot itt is
         switch (idx) {
-          case 0: // Right (+X)
-            textMesh.rotation.set(0, Math.PI / 2, 0);
-            textMesh.position.set(0.5, -0.1, 0.1);
-            break;
-          case 1: // Left (-X)
-            textMesh.rotation.set(0, -Math.PI / 2, 0);
-            textMesh.position.set(-0.5, -0.1, -0.1);
-            break;
-          case 2: // Top (+Y)
-            textMesh.rotation.set(-Math.PI / 2, 0, 0);
-            textMesh.position.set(-0.1, 0.5, 0.1);
-            break;
-          case 3: // Bottom (-Y)
-            textMesh.rotation.set(Math.PI / 2, 0, 0);
-            textMesh.position.set(-0.1, -0.5 , -0.1);
-            break;
-          case 4: // Front (+Z)
-            textMesh.rotation.set(0, 0, 0);
-            textMesh.position.set(-0.1, -0.1, 0.5);
-            break;
-          case 5: // Back (-Z)
-            textMesh.rotation.set(0, Math.PI, 0);
-            textMesh.position.set(0.1, -0.1, -0.5);
-            break;
+          case 0: plane.rotation.set(0, Math.PI / 2, 0); plane.position.set(0.5, -0.05, 0); break;
+          case 1: plane.rotation.set(0, -Math.PI / 2, 0); plane.position.set(-0.5, -0.05, 0); break;
+          case 2: plane.rotation.set(-Math.PI / 2, 0, 0); plane.position.set(0, 0.5, 0.05); break;
+          case 3: plane.rotation.set(Math.PI / 2, 0, 0); plane.position.set(0, -0.5, -0.05); break; 
+          case 4: plane.rotation.set(0, 0, 0); plane.position.set(0, -0.05, 0.5); break;
+          case 5: plane.rotation.set(0, Math.PI, 0); plane.position.set(0, -0.05, -0.5); break;
         }
-		
-		// Finom mélységi pozíció a lap síkjára
-        //textMesh.position.add(sideNormal.clone().multiplyScalar(0));
-
-  
+      
         const pivot = new THREE.Group();
-        pivot.add(textMesh);
-        
-        // Pozíció a lap síkjára
-        pivot.position.copy(sideNormal.clone().multiplyScalar(0));
+        pivot.add(plane);
+        pivot.position.copy(dir.clone().multiplyScalar(0));
         cube.add(pivot);
+      }
+         //console.log("CHAR", faceChar, "EMOJI?", isEmoji(faceChar));
+
+
+
       });
     });
+			 
+			 //console.trace("[TRACE] applyFaceLetters hívva, adat:", faceData);
+
   }
   
+  createRubikCube();
+
   
+  initFromUrl().then(() => {
+    const params = new URLSearchParams(window.location.search);
+    const hasC = params.has("c");
   
-    
-  fontLoader.load('RobotoMono.json', font => {
-    loadedFont = font;
-    initFromUrl().then(() => {
-    if (!window.location.search.includes("c=")) {
+    if (!hasC) {
       applyFaceLetters({
-        front:  "   SEC   ",
+        front:  "🙈🙉🙊SEC TE",
         back:   "         ",
         left:   "         ",
-        right:  "   RET   ",
-        top:    " ? ? ? ? ",
-        bottom: "CURIOUS??"
+        right:  "🔥😻😂RETXT",
+        top:    "    ❤️   ",
+        bottom: "         "
       });
     }
-    if (window.location.search.includes('c=')) {
+  
+    if (hasC) {
       const inputWrapper = document.getElementById('inputWrapper');
       inputWrapper.classList.remove('open');
       inputWrapper.style.height = '0vh';
       currentHeight = 0;
     }
-    });
   });
+ 
   
+ 
   
     function updateLogicalPositions() {
     cubes.forEach(cube => {
@@ -1017,32 +1047,45 @@
       });
     });
   }
+  
+  
+  
 
-  createRubikCube();
+
+  //createRubikCube();
+
   
   camera.position.set(4, 4, 6);
   controls.target.set(0, 0, 0);
   controls.update();
   
+
   
   async function initFromUrl() {
     const params = new URLSearchParams(window.location.search);
     const compressed = params.get('c');
+	console.log("URL-ből beolvasott tömörített adat:", compressed);
+
     if (!compressed) return;
   
     try {
       const json = LZString.decompressFromEncodedURIComponent(compressed);
+	  console.log("Dekódolt JSON szöveg:", json);
       if (!json) {
         console.error("Nem sikerült dekódolni a tömörített adatot.");
         return;
       }
   
       const decoded = JSON.parse(json);
+	  console.log("Dekódolt objektum:", decoded);
   
       rubikGroup.visible = false;
+  
       applyFaceLetters(decoded);
- 
-      // Azonnali forgatások
+	  console.log("Dekódolt objektum:", decoded);
+      //populateInputsFromData(decoded, true); // ne frissítsen újra!
+  
+      // Ha vannak forgatások, hajtsuk végre
       if (decoded.moves && Array.isArray(decoded.moves)) {
         for (const move of decoded.moves) {
           const layerFilter = cube => Math.abs(cube.position[move.axis] - move.layerValue) < 0.2;
@@ -1413,27 +1456,23 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
   }
   
   document.getElementById('applyTextButton').addEventListener('click', () => {
-    const getVal = id => {
-      // ha a régi mező létezik (pl. face-front), használd azt
-      //const el = document.getElementById(id);
-      //if (el) return el.value.padEnd(9).slice(0, 9);
-    
-      // ha nem, akkor próbáld összefűzni a 3×3 inputokból (pl. front-0...front-8)
-      const face = id.replace('face-', '');
-      let result = '';
+    const getVal = face => {
+      const chars = [];
       for (let i = 0; i < 9; i++) {
         const cell = document.getElementById(`${face}-${i}`);
-        result += cell && cell.value ? cell.value : ' ';
+        const raw = cell && cell.value ? cell.value.normalize('NFC') : ' ';
+        const grapheme = Array.from(raw)[0] || ' ';
+        chars.push(grapheme);
       }
-      return result.padEnd(9).slice(0, 9);
+      return chars.join('');
     };
     applyFaceLetters({
-      front:  getVal('face-front'),
-      back:   getVal('face-back'),
-      left:   getVal('face-left'),
-      right:  getVal('face-right'),
-      top:    getVal('face-top'),
-      bottom: getVal('face-bottom')
+      front: getVal('front'),
+      back: getVal('back'),
+      left: getVal('left'),
+      right: getVal('right'),
+      top: getVal('top'),
+      bottom: getVal('bottom')
     });
     inputWrapper.classList.remove('open');
       inputWrapper.style.height = `${minHeight}vh`;
@@ -1446,25 +1485,29 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
   });
   
   document.getElementById('generateLinkButton').addEventListener('click', () => {
-    const getVal = id => {
-      const face = id.replace('face-', '');
-      let result = '';
+    const getVal = face => {
+      const chars = [];
       for (let i = 0; i < 9; i++) {
         const cell = document.getElementById(`${face}-${i}`);
-        result += cell && cell.value ? cell.value : ' ';
+        const raw = cell && cell.value ? cell.value.normalize('NFC') : ' ';
+        const grapheme = Array.from(raw)[0] || ' ';
+        chars.push(grapheme);
       }
-      return result.padEnd(9).slice(0, 9);
+      return chars.join('');
     };
   
     const cubeState = {
-      front: getVal('face-front'),
-      back: getVal('face-back'),
-      left: getVal('face-left'),
-      right: getVal('face-right'),
-      top: getVal('face-top'),
-      bottom: getVal('face-bottom'),
-      moves: moveHistory
+      front: getVal('front'),
+      back: getVal('back'),
+      left: getVal('left'),
+      right: getVal('right'),
+      top: getVal('top'),
+      bottom: getVal('bottom')
     };
+    
+    if (Array.isArray(moveHistory) && moveHistory.length > 0 && moveHistory.every(m => typeof m === 'object')) {
+      cubeState.moves = moveHistory;
+    }
   
     const json = JSON.stringify(cubeState);
     const compressed = LZString.compressToEncodedURIComponent(json);
@@ -1477,39 +1520,60 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
       alert("Failed to copy link 😞");
     });
   });
+
+
   
   function updateCubeFromInputs() {
-    const getVal = id => {
-      const face = id.replace('face-', '');
-      let result = '';
+    console.trace("[TRACE] updateCubeFromInputs fut");
+	const getVal = face => {
+      const chars = [];
       for (let i = 0; i < 9; i++) {
         const cell = document.getElementById(`${face}-${i}`);
-        result += cell && cell.value ? cell.value : ' ';
+        const raw = cell && cell.value ? cell.value.normalize('NFC') : ' ';
+        const grapheme = Array.from(raw)[0] || ' ';
+        chars.push(grapheme);
       }
-      return result.padEnd(9).slice(0, 9);
+      return chars.join('');
     };
-  
     applyFaceLetters({
-      front:  getVal('face-front'),
-      back:   getVal('face-back'),
-      left:   getVal('face-left'),
-      right:  getVal('face-right'),
-      top:    getVal('face-top'),
-      bottom: getVal('face-bottom')
+      front: getVal('front'),
+      back: getVal('back'),
+      left: getVal('left'),
+      right: getVal('right'),
+      top: getVal('top'),
+      bottom: getVal('bottom')
     });
+  };
+    
+  function populateInputsFromData(data, skipUpdate = false) {
+    suppressInputUpdates = true;
+  
+    const faces = ["front", "back", "left", "right", "top", "bottom"];
+    for (const face of faces) {
+      const text = data[face] || "";
+      const graphemes = Array.from(text.normalize("NFC"));
+      for (let i = 0; i < 9; i++) {
+        const input = document.getElementById(`${face}-${i}`);
+        input.value = graphemes[i] || "";
+      }
+    }
+  
+    suppressInputUpdates = false;
+  
+    if (!skipUpdate) {
+      updateCubeFromInputs();
+    }
+	console.trace("[TRACE] populateInputsFromData vége");
   }
   
   document.querySelectorAll('.face-input').forEach((group, groupIndex, allGroups) => {
     const inputs = group.querySelectorAll('input');
     inputs.forEach((input, idx) => {
-      // beíráskor előre ugrik
-        input.addEventListener('input', e => {
-		const val = input.value;
-		  const graphemes = [...val];
-          if (graphemes.length > 1) {
-            input.value = graphemes[0];
-          }
-        if (e.inputType !== 'deleteContentBackward' && input.value.length === 1) {
+      input.addEventListener('input', e => {
+        const grapheme = Array.from(input.value)[0] || '';
+        input.value = grapheme;
+      
+        if (e.inputType !== 'deleteContentBackward' && grapheme.length > 0) {
           if (idx < 8) {
             inputs[idx + 1].focus();
           } else {
@@ -1520,32 +1584,29 @@ if (layerFilter && axis && direction !== undefined && layerValue !== undefined) 
             }
           }
         }
-        // 🔄 valós idejű frissítés a kockán
-        updateCubeFromInputs();
-    });
-      
-  
-      // backspace: ha üres mező → visszaugrik
-      input.addEventListener('keydown', e => {
-        if (e.key === 'Backspace' && input.value === '') {
-          if (idx > 0) {
-            inputs[idx - 1].focus();
-          } else if (groupIndex > 0) {
-            const prevGroup = allGroups[groupIndex - 1];
-            if (prevGroup) {
-              const prevInputs = prevGroup.querySelectorAll('input');
-              if (prevInputs.length > 0) {
-                prevInputs[prevInputs.length - 1].focus();
-              }
-            }
+  updateCubeFromInputs();
+});
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Backspace' && input.value === '') {
+      if (idx > 0) {
+        inputs[idx - 1].focus();
+      } else if (groupIndex > 0) {
+        const prevGroup = allGroups[groupIndex - 1];
+        if (prevGroup) {
+          const prevInputs = prevGroup.querySelectorAll('input');
+          if (prevInputs.length > 0) {
+            prevInputs[prevInputs.length - 1].focus();
           }
         }
-        // 🔄 valós idejű frissítés a kockán
-        updateCubeFromInputs();
-      });
-    });
+      }
+    }
+
+    updateCubeFromInputs();
   });
-  
+});
+});
+       
   
   const inputWrapper = document.getElementById('inputWrapper');
   const dragHandle = document.querySelector('.input-header');
